@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,13 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
 
 const Dashboard = () => {
-  const [cameras, setCameras] = useState([
-    { id: 1, name: "Caméra Salle 1", url: "rtsp://192.168.1.100:554/stream", api_link: "https://your-model.onrender.com/api/detect", status: "active" },
-    { id: 2, name: "Caméra Salle 2", url: "rtsp://192.168.1.101:554/stream", api_link: "https://your-model.onrender.com/api/detect", status: "inactive" },
-  ]);
-
+  const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
   const [alerts, setAlerts] = useState([
     { id: 1, camera_name: "Caméra Salle 1", datetime: "2025-06-17 14:30:25", status: "Triche détectée" },
     { id: 2, camera_name: "Caméra Salle 1", datetime: "2025-06-17 14:25:10", status: "Comportement suspect" },
@@ -30,28 +27,68 @@ const Dashboard = () => {
   });
 
   const { toast } = useToast();
+  const db = getFirestore(app); // Obtenir l'instance Firestore
 
-  const handleAddCamera = (e: React.FormEvent) => {
-    e.preventDefault();
-    const camera = {
-      id: cameras.length + 1,
-      ...newCamera,
-      status: "active"
+  useEffect(() => {
+    const fetchCameras = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "cameras"));
+        const camerasData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setCameras(camerasData);
+      } catch (error) {
+        console.error("Error fetching cameras: ", error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les caméras.",
+          variant: "destructive"
+        });
+      }
     };
-    setCameras([...cameras, camera]);
-    setNewCamera({ name: "", url: "", api_link: "https://your-model.onrender.com/api/detect" });
-    toast({
-      title: "Caméra ajoutée",
-      description: `${camera.name} a été ajoutée avec succès.`,
-    });
+    fetchCameras();
+  }, [db, toast]);
+
+  const handleAddCamera = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const docRef = await addDoc(collection(db, "cameras"), {
+        ...newCamera,
+        status: "active" // Default status
+      });
+      setCameras(prevCameras => [...prevCameras, { id: docRef.id, ...newCamera, status: "active" }]);
+      setNewCamera({ name: "", url: "", api_link: "https://your-model.onrender.com/api/detect" });
+      toast({
+        title: "Caméra ajoutée",
+        description: `${newCamera.name} a été ajoutée avec succès.`,
+      });
+    } catch (error) {
+      console.error("Error adding camera: ", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter la caméra.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleDeleteCamera = (id: number) => {
-    setCameras(cameras.filter(camera => camera.id !== id));
-    toast({
-      title: "Caméra supprimée",
-      description: "La caméra a été supprimée avec succès.",
-    });
+  const handleDeleteCamera = async (id: string) => { // id should be string for Firestore doc id
+    try {
+      await deleteDoc(doc(db, "cameras", id));
+      setCameras(cameras.filter(camera => camera.id !== id));
+      toast({
+        title: "Caméra supprimée",
+        description: "La caméra a été supprimée avec succès.",
+      });
+    } catch (error) {
+      console.error("Error deleting camera: ", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer la caméra.",
+        variant: "destructive"
+      });
+    }
   };
 
   const stats = [
