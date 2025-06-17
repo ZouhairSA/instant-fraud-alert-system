@@ -1,0 +1,8 @@
+flask==3.1.1
+flask-cors==4.0.0
+ultralytics==8.3.155
+torch==2.7.1
+torchvision==0.22.1
+opencv-python-headless==4.11.0.86
+numpy==2.3.0
+pillow==11.2.1 
