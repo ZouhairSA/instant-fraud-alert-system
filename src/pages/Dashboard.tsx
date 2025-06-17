@@ -9,16 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
 
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
-  const [alerts, setAlerts] = useState([
-    { id: 1, camera_name: "Caméra Salle 1", datetime: "2025-06-17 14:30:25", status: "Triche détectée" },
-    { id: 2, camera_name: "Caméra Salle 1", datetime: "2025-06-17 14:25:10", status: "Comportement suspect" },
-    { id: 3, camera_name: "Caméra Salle 2", datetime: "2025-06-17 14:20:05", status: "Normal" },
-  ]);
+  const [alerts, setAlerts] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
 
   const [newCamera, setNewCamera] = useState({
     name: "",
@@ -30,24 +26,35 @@ const Dashboard = () => {
   const db = getFirestore(app); // Obtenir l'instance Firestore
 
   useEffect(() => {
-    const fetchCameras = async () => {
+    const fetchCamerasAndAlerts = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "cameras"));
-        const camerasData = querySnapshot.docs.map(doc => ({
+        // Fetch Cameras
+        const camerasSnapshot = await getDocs(collection(db, "cameras"));
+        const camerasData = camerasSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
         setCameras(camerasData);
+
+        // Fetch Alerts
+        const alertsQuery = query(collection(db, "alerts"), orderBy("datetime", "desc"));
+        const alertsSnapshot = await getDocs(alertsQuery);
+        const alertsData = alertsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setAlerts(alertsData);
+
       } catch (error) {
-        console.error("Error fetching cameras: ", error);
+        console.error("Error fetching data: ", error);
         toast({
           title: "Erreur",
-          description: "Impossible de charger les caméras.",
+          description: "Impossible de charger les données.",
           variant: "destructive"
         });
       }
     };
-    fetchCameras();
+    fetchCamerasAndAlerts();
   }, [db, toast]);
 
   const handleAddCamera = async (e: React.FormEvent) => {
@@ -93,8 +100,8 @@ const Dashboard = () => {
 
   const stats = [
     { title: "Caméras Actives", value: cameras.filter(c => c.status === "active").length, icon: Camera, trend: "+2" },
-    { title: "Alertes Aujourd'hui", value: alerts.length, icon: Bell, trend: "+5" },
-    { title: "Détections", value: "12", icon: Key, trend: "+3" },
+    { title: "Alertes Aujourd'hui", value: alerts.length, icon: Bell, trend: "+5" }, // Compter le nombre d'alertes dynamiquement
+    { title: "Détections", value: "12", icon: Key, trend: "+3" }, // Ce champ pourrait aussi être dynamique
     { title: "Statut Système", value: "Opérationnel", icon: Users, trend: "100%" },
   ];
 
