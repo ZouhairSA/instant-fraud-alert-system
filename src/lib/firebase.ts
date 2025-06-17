@@ -3,13 +3,15 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "your-api-key-here",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "your-app-id"
+  apiKey: "AIzaSyBK2UXjq_W0-oVM7fSafEfYGiSR6uCriPg",
+  authDomain: "cheat-detector-801a2.firebaseapp.com",
+  projectId: "cheat-detector-801a2",
+  storageBucket: "cheat-detector-801a2.firebasestorage.app",
+  messagingSenderId: "791500328374",
+  appId: "1:791500328374:web:f4216c635882a0d1140517",
+  measurementId: "G-2KEMSP324G"
 };
 
 // Initialize Firebase
