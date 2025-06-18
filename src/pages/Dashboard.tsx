@@ -16,6 +16,7 @@ import { CameraModal } from "@/components/ui/CameraModal";
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
   const [alerts, setAlerts] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
+  const [contacts, setContacts] = useState([]);
 
   const [newCamera, setNewCamera] = useState({
     name: "",
@@ -65,6 +66,18 @@ const Dashboard = () => {
       }
     };
     fetchCamerasAndAlerts();
+
+    // Récupérer les contacts
+    const fetchContacts = async () => {
+      try {
+        const contactsSnapshot = await getDocs(collection(db, "contacts"));
+        const contactsData = contactsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setContacts(contactsData);
+      } catch (error) {
+        toast({ title: "Erreur", description: "Impossible de charger les contacts.", variant: "destructive" });
+      }
+    };
+    fetchContacts();
   }, [db, toast]);
 
   const handleAddCamera = async (e: React.FormEvent) => {
@@ -386,6 +399,44 @@ const Dashboard = () => {
                   <span className="text-sm">Notifications</span>
                   <Badge variant="default">Activées</Badge>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Tableau des contacts reçus */}
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>Contacts reçus</CardTitle>
+                <CardDescription>Liste des messages reçus via le formulaire de contact</CardDescription>
+              </CardHeader>
+              <CardContent className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Nom</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Message</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {contacts.length > 0 ? contacts.map(contact => (
+                      <TableRow key={contact.id}>
+                        <TableCell className="whitespace-nowrap text-xs">{contact.createdAt}</TableCell>
+                        <TableCell>{contact.name}</TableCell>
+                        <TableCell>{contact.email}</TableCell>
+                        <TableCell className="max-w-xs truncate">{contact.message}</TableCell>
+                        <TableCell>
+                          <Badge variant={contact.status === "new" ? "secondary" : "default"}>{contact.status}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    )) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center text-gray-400">Aucun contact reçu.</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </div>
