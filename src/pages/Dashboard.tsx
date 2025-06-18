@@ -129,10 +129,19 @@ const Dashboard = () => {
     document.body.removeChild(link);
   };
 
+  // Calculs dynamiques pour les statistiques
+  const activeCameras = cameras.filter(c => c.status === "active").length;
+
+  // Calcul du nombre d'alertes aujourd'hui
+  const today = new Date().toISOString().slice(0, 10); // format YYYY-MM-DD
+  const alertsToday = alerts.filter(a => a.datetime && a.datetime.startsWith(today)).length;
+
+  const totalDetections = alerts.length;
+
   const stats = [
-    { title: "Caméras Actives", value: cameras.filter(c => c.status === "active").length, icon: Camera, trend: "+2" },
-    { title: "Alertes Aujourd'hui", value: alerts.length, icon: Bell, trend: "+5" }, // Compter le nombre d'alertes dynamiquement
-    { title: "Détections", value: "12", icon: Key, trend: "+3" }, // Ce champ pourrait aussi être dynamique
+    { title: "Caméras Actives", value: activeCameras, icon: Camera, trend: `+${activeCameras}` },
+    { title: "Alertes Aujourd'hui", value: alertsToday, icon: Bell, trend: `+${alertsToday}` },
+    { title: "Détections", value: totalDetections, icon: Key, trend: `+${totalDetections}` },
     { title: "Statut Système", value: "Opérationnel", icon: Users, trend: "100%" },
   ];
 
