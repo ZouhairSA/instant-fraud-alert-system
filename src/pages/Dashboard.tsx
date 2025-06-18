@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [newCamera, setNewCamera] = useState({
     name: "",
     url: "",
-    api_link: "https://your-model.onrender.com/api/detect"
+    api_link: "https://api-tricherie-hestim.onrender.com/api/detect"
   });
 
   const { toast } = useToast();
@@ -75,7 +75,7 @@ const Dashboard = () => {
         status: "active" // Default status
       });
       setCameras(prevCameras => [...prevCameras, { id: docRef.id, ...newCamera, status: "active" }]);
-      setNewCamera({ name: "", url: "", api_link: "https://your-model.onrender.com/api/detect" });
+      setNewCamera({ name: "", url: "", api_link: "https://api-tricherie-hestim.onrender.com/api/detect" });
       toast({
         title: "Caméra ajoutée",
         description: `${newCamera.name} a été ajoutée avec succès.`,
@@ -237,7 +237,7 @@ const Dashboard = () => {
                     <Label htmlFor="api-link">Lien API du modèle Render</Label>
                     <Input
                       id="api-link"
-                      placeholder="https://your-model.onrender.com/api/detect"
+                      placeholder="https://api-tricherie-hestim.onrender.com/api/detect"
                       value={newCamera.api_link}
                       onChange={(e) => setNewCamera({...newCamera, api_link: e.target.value})}
                       required
