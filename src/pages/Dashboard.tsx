@@ -254,10 +254,6 @@ const Dashboard = () => {
               <Button variant="outline">
                 Profile Admin
               </Button>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 dark:text-gray-300">Dark</span>
-                <Switch checked={isDark} onCheckedChange={setIsDark} />
-              </div>
               <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
                 <AlertDialogTrigger asChild>
                   <Button variant="ghost" onClick={e => { e.preventDefault(); setLogoutDialogOpen(true); }}>Déconnexion</Button>
@@ -287,10 +283,7 @@ const Dashboard = () => {
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
-            <Card
-              key={index}
-              className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900 dark:to-gray-900 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 border-0"
-            >
+            <Card key={index} className="bg-white shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
                 <stat.icon className="h-4 w-4 text-blue-600" />
