@@ -14,6 +14,7 @@ import { app } from "../firebase"; // Assuming firebase.ts exports the initializ
 import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Switch } from "@/components/ui/switch";
 
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
@@ -42,6 +43,24 @@ const Dashboard = () => {
   const [contactToDelete, setContactToDelete] = useState<string | null>(null);
 
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
+  // Hook pour dark mode
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark" || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDark]);
 
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
@@ -234,6 +253,10 @@ const Dashboard = () => {
               <Button variant="outline">
                 Profile Admin
               </Button>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 dark:text-gray-300">Dark</span>
+                <Switch checked={isDark} onCheckedChange={setIsDark} />
+              </div>
               <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
                 <AlertDialogTrigger asChild>
                   <Button variant="ghost" onClick={e => { e.preventDefault(); setLogoutDialogOpen(true); }}>Déconnexion</Button>
@@ -263,7 +286,10 @@ const Dashboard = () => {
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
-            <Card key={index} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Card
+              key={index}
+              className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900 dark:to-gray-900 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 border-0"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
                 <stat.icon className="h-4 w-4 text-blue-600" />
@@ -327,7 +353,10 @@ const Dashboard = () => {
                       required
                     />
                   </div>
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                  <Button
+                    className="transition-all duration-200 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 shadow-md hover:scale-105"
+                    type="submit"
+                  >
                     Ajouter la caméra
                   </Button>
                 </form>
@@ -354,7 +383,7 @@ const Dashboard = () => {
                   </TableHeader>
                   <TableBody>
                     {cameras.map((camera) => (
-                      <TableRow key={camera.id}>
+                      <TableRow className="transition-colors hover:bg-blue-50 dark:hover:bg-blue-900">
                         <TableCell className="font-medium">{camera.name}</TableCell>
                         <TableCell className="text-sm text-gray-600 max-w-xs truncate">
                           {camera.url}
@@ -523,7 +552,7 @@ const Dashboard = () => {
                   </TableHeader>
                   <TableBody>
                     {contacts.length > 0 ? contacts.map(contact => (
-                      <TableRow key={contact.id}>
+                      <TableRow className="transition-colors hover:bg-blue-50 dark:hover:bg-blue-900">
                         <TableCell className="whitespace-nowrap text-xs">
                           {contact.createdAt?.seconds
                             ? new Date(contact.createdAt.seconds * 1000).toLocaleString()
