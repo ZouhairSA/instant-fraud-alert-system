@@ -91,10 +91,10 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
-            <span className="text-xl font-bold">Détecteur de Triche</span>
+        <div className="container flex flex-wrap md:flex-nowrap h-auto md:h-16 items-center justify-between px-2 md:px-6">
+          <div className="flex items-center space-x-2 w-full md:w-auto justify-center md:justify-start py-2 md:py-0">
+            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-8 md:h-10 w-auto mr-2" />
+            <span className="text-lg md:text-xl font-bold">Détecteur de Triche</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
@@ -115,37 +115,37 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50 py-20 md:py-32">
-        <div className="container px-4 md:px-6">
+        <div className="container px-2 md:px-4 lg:px-6">
           <div className="flex flex-col items-center space-y-8 text-center">
             <div className="space-y-4 animate-fade-in">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl md:text-7xl">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-gray-900">
                 Système Intelligent de
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
                   Détection de Triche
                 </span>
                 en Temps Réel
               </h1>
-              <p className="mx-auto max-w-2xl text-xl text-gray-600 leading-relaxed">
+              <p className="mx-auto max-w-2xl text-lg md:text-xl text-gray-600 leading-relaxed">
                 Analyse automatique des caméras et détection instantanée des fraudes
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 animate-scale-in">
-              <Link to="/login">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg transition-all duration-300 hover-scale">
+            <div className="flex flex-col sm:flex-row gap-4 animate-scale-in w-full justify-center">
+              <Link to="/login" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg transition-all duration-300 hover-scale">
                   Commencer
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="px-8 py-3 text-lg transition-all duration-300 hover-scale">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 text-lg transition-all duration-300 hover-scale">
                 En savoir plus
               </Button>
             </div>
 
-            <div className="mt-12 animate-fade-in">
+            <div className="mt-8 animate-fade-in w-full">
               <img 
                 src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&crop=center"
                 alt="Technologie de surveillance avancée"
-                className="rounded-2xl shadow-2xl mx-auto max-w-4xl w-full"
+                className="rounded-2xl shadow-2xl mx-auto max-w-full w-full md:max-w-4xl"
               />
             </div>
           </div>
@@ -203,7 +203,7 @@ const Index = () => {
 
       {/* Features Section */}
       <section id="features" className="py-20 bg-gray-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-2 md:px-4 lg:px-6">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Fonctionnalités Avancées
@@ -213,14 +213,14 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover-scale bg-white">
                 <CardHeader className="text-center pb-4">
                   <div className="mx-auto w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-white" />
                   </div>
-                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                  <CardTitle className="text-lg md:text-xl font-semibold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center text-gray-600 leading-relaxed">
@@ -340,12 +340,12 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container px-4 md:px-6">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
+      <footer className="bg-gray-900 text-white py-8 md:py-12">
+        <div className="container px-2 md:px-4 lg:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+            <div className="space-y-4 flex flex-col items-center md:items-start">
+              <div className="flex items-center space-x-2 justify-center md:justify-start">
+                <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-8 md:h-10 w-auto mr-2" />
                 <span className="text-lg font-bold">Détecteur de Triche</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
