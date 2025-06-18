@@ -422,7 +422,11 @@ const Dashboard = () => {
                   <TableBody>
                     {contacts.length > 0 ? contacts.map(contact => (
                       <TableRow key={contact.id}>
-                        <TableCell className="whitespace-nowrap text-xs">{contact.createdAt}</TableCell>
+                        <TableCell className="whitespace-nowrap text-xs">
+                          {contact.createdAt?.seconds
+                            ? new Date(contact.createdAt.seconds * 1000).toLocaleString()
+                            : contact.createdAt}
+                        </TableCell>
                         <TableCell>{contact.name}</TableCell>
                         <TableCell>{contact.email}</TableCell>
                         <TableCell className="max-w-xs truncate">{contact.message}</TableCell>
