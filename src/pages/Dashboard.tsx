@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Camera, Bell, Users, Key, ArrowUp, ArrowDown, Download } from "lucide-react";
+import { Camera, Bell, Users, Key, ArrowUp, ArrowDown, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
@@ -158,11 +158,19 @@ const Dashboard = () => {
 
   const totalDetections = alerts.length;
 
+  // Calcul du nombre de contacts aujourd'hui
+  const contactsToday = contacts.filter(c => {
+    if (!c.createdAt) return false;
+    const date = c.createdAt?.seconds ? new Date(c.createdAt.seconds * 1000).toISOString().slice(0, 10) : c.createdAt?.slice(0, 10);
+    return date === today;
+  }).length;
+
   const stats = [
     { title: "Caméras Actives", value: activeCameras, icon: Camera, trend: `+${activeCameras}` },
     { title: "Alertes Aujourd'hui", value: alertsToday, icon: Bell, trend: `+${alertsToday}` },
     { title: "Détections", value: totalDetections, icon: Key, trend: `+${totalDetections}` },
     { title: "Statut Système", value: "Opérationnel", icon: Users, trend: "100%" },
+    { title: "Contacts", value: contacts.length, icon: Mail, trend: `+${contactsToday}` },
   ];
 
   const handleDeleteContact = async (contactId) => {
