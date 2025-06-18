@@ -29,6 +29,12 @@ const Dashboard = () => {
   const [selectedCamera, setSelectedCamera] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const alertsPerPage = 5;
+  const totalPages = Math.ceil(alerts.length / alertsPerPage);
+  const paginatedAlerts = alerts.slice((currentPage - 1) * alertsPerPage, currentPage * alertsPerPage);
+
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
       try {
@@ -105,6 +111,22 @@ const Dashboard = () => {
   const handleOpenCamera = (camera) => {
     setSelectedCamera(camera);
     setIsDialogOpen(true);
+  };
+
+  // Export CSV
+  const exportAlertsCSV = () => {
+    if (!alerts.length) return;
+    const header = "camera_name,datetime,status\n";
+    const rows = alerts.map(a => `${a.camera_name},${a.datetime},${a.status}`).join("\n");
+    const csv = header + rows;
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "alerts.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const stats = [
@@ -278,18 +300,30 @@ const Dashboard = () => {
           {/* Alerts Panel */}
           <div className="space-y-6">
             <Card className="bg-white shadow-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Bell className="h-5 w-5" />
-                  <span>Alertes en Temps Réel</span>
-                </CardTitle>
-                <CardDescription>
-                  Dernières détections et alertes du système
-                </CardDescription>
+              <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Bell className="h-5 w-5" />
+                    <span>Alertes en Temps Réel</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Dernières détections et alertes du système
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={exportAlertsCSV}
+                    disabled={alerts.length === 0}
+                  >
+                    Exporter CSV
+                  </Button>
+                  {/* Pour PDF, tu peux ajouter un bouton similaire plus tard */}
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {alerts.map((alert) => (
+                  {paginatedAlerts.length > 0 ? paginatedAlerts.map((alert) => (
                     <div key={alert.id} className="border-l-4 border-blue-500 pl-4 py-2">
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-sm">{alert.camera_name}</span>
@@ -302,8 +336,22 @@ const Dashboard = () => {
                       </div>
                       <p className="text-xs text-gray-600 mt-1">{alert.datetime}</p>
                     </div>
-                  ))}
+                  )) : (
+                    <div className="text-center text-gray-400 py-8">Aucune alerte à afficher.</div>
+                  )}
                 </div>
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-2 mt-6">
+                    <Button size="sm" variant="outline" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
+                      Précédent
+                    </Button>
+                    <span className="text-sm text-gray-600">Page {currentPage} / {totalPages}</span>
+                    <Button size="sm" variant="outline" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>
+                      Suivant
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
