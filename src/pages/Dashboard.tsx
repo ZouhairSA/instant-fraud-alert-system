@@ -365,7 +365,16 @@ const Dashboard = () => {
                             >
                               Voir
                             </Button>
-                            <AlertDialog open={!!cameraToDelete} onOpenChange={open => { if (!open) setCameraToDelete(null); }}>
+                            <AlertDialog open={cameraToDelete === camera.id} onOpenChange={open => { if (!open) setCameraToDelete(null); }}>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => setCameraToDelete(camera.id)}
+                                >
+                                  Supprimer
+                                </Button>
+                              </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <div className="flex flex-col items-center justify-center text-center">
                                   <ExclamationTriangleIcon className="w-12 h-12 text-red-500 mb-2" />
@@ -528,7 +537,12 @@ const Dashboard = () => {
                           </select>
                         </TableCell>
                         <TableCell>
-                          <AlertDialog open={!!contactToDelete} onOpenChange={open => { if (!open) setContactToDelete(null); }}>
+                          <AlertDialog open={contactToDelete === contact.id} onOpenChange={open => { if (!open) setContactToDelete(null); }}>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" variant="destructive" onClick={() => setContactToDelete(contact.id)}>
+                                Supprimer
+                              </Button>
+                            </AlertDialogTrigger>
                             <AlertDialogContent>
                               <div className="flex flex-col items-center justify-center text-center">
                                 <ExclamationTriangleIcon className="w-12 h-12 text-red-500 mb-2" />
