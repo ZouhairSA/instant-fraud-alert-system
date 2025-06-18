@@ -37,6 +37,9 @@ const Dashboard = () => {
   const totalPages = Math.ceil(alerts.length / alertsPerPage);
   const paginatedAlerts = alerts.slice((currentPage - 1) * alertsPerPage, currentPage * alertsPerPage);
 
+  const [cameraToDelete, setCameraToDelete] = useState<string | null>(null);
+  const [contactToDelete, setContactToDelete] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
       try {
@@ -342,13 +345,31 @@ const Dashboard = () => {
                             >
                               Voir
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleDeleteCamera(camera.id)}
-                            >
-                              Supprimer
-                            </Button>
+                            <AlertDialog open={!!cameraToDelete} onOpenChange={open => { if (!open) setCameraToDelete(null); }}>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setCameraToDelete(camera.id)}
+                                >
+                                  Supprimer
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Voulez-vous vraiment supprimer cette caméra ? Cette action est irréversible.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => { if (cameraToDelete) handleDeleteCamera(cameraToDelete); setCameraToDelete(null); }}>
+                                    Supprimer
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -495,9 +516,27 @@ const Dashboard = () => {
                           </select>
                         </TableCell>
                         <TableCell>
-                          <Button size="sm" variant="destructive" onClick={() => handleDeleteContact(contact.id)}>
-                            Supprimer
-                          </Button>
+                          <AlertDialog open={!!contactToDelete} onOpenChange={open => { if (!open) setContactToDelete(null); }}>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" variant="destructive" onClick={() => setContactToDelete(contact.id)}>
+                                Supprimer
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Voulez-vous vraiment supprimer ce contact ? Cette action est irréversible.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => { if (contactToDelete) handleDeleteContact(contactToDelete); setContactToDelete(null); }}>
+                                  Supprimer
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </TableCell>
                       </TableRow>
                     )) : (
