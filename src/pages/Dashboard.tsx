@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
 import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
 import { CameraModal } from "@/components/ui/CameraModal";
 
@@ -165,6 +165,16 @@ const Dashboard = () => {
       toast({ title: "Contact supprimé", description: "Le contact a été supprimé avec succès." });
     } catch (error) {
       toast({ title: "Erreur", description: "Impossible de supprimer le contact.", variant: "destructive" });
+    }
+  };
+
+  const handleStatusChange = async (contactId, newStatus) => {
+    try {
+      await updateDoc(doc(db, "contacts", contactId), { status: newStatus });
+      setContacts(contacts => contacts.map(c => c.id === contactId ? { ...c, status: newStatus } : c));
+      toast({ title: "Statut modifié", description: "Le statut du contact a été mis à jour." });
+    } catch (error) {
+      toast({ title: "Erreur", description: "Impossible de modifier le statut.", variant: "destructive" });
     }
   };
 
@@ -442,7 +452,16 @@ const Dashboard = () => {
                         <TableCell>{contact.email}</TableCell>
                         <TableCell className="max-w-xs truncate">{contact.message}</TableCell>
                         <TableCell>
-                          <Badge variant={contact.status === "new" ? "secondary" : "default"}>{contact.status}</Badge>
+                          <select
+                            value={contact.status}
+                            onChange={e => handleStatusChange(contact.id, e.target.value)}
+                            className={`px-2 py-1 rounded font-semibold text-xs
+                              ${contact.status === "new" ? "bg-blue-100 text-blue-700 border-blue-300" : "bg-green-100 text-green-700 border-green-300"}
+                              border outline-none transition-colors`}
+                          >
+                            <option value="new" className="text-blue-700">new</option>
+                            <option value="done" className="text-green-700">done</option>
+                          </select>
                         </TableCell>
                         <TableCell>
                           <Button size="sm" variant="destructive" onClick={() => handleDeleteContact(contact.id)}>
