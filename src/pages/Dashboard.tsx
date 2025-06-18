@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
 
@@ -24,6 +24,9 @@ const Dashboard = () => {
 
   const { toast } = useToast();
   const db = getFirestore(app); // Obtenir l'instance Firestore
+
+  const [selectedCamera, setSelectedCamera] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
@@ -96,6 +99,11 @@ const Dashboard = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const handleOpenCamera = (camera) => {
+    setSelectedCamera(camera);
+    setIsDialogOpen(true);
   };
 
   const stats = [
@@ -245,6 +253,13 @@ const Dashboard = () => {
                             <Button
                               size="sm"
                               variant="outline"
+                              onClick={() => handleOpenCamera(camera)}
+                            >
+                              Voir
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
                               onClick={() => handleDeleteCamera(camera.id)}
                             >
                               Supprimer
@@ -318,6 +333,26 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedCamera?.name}</DialogTitle>
+            <DialogDescription>
+              Aperçu de la caméra
+            </DialogDescription>
+          </DialogHeader>
+          {selectedCamera && (
+            <div className="w-full flex justify-center items-center">
+              <img
+                src={`https://via.placeholder.com/640x360?text=${encodeURIComponent(selectedCamera.name)}`}
+                alt={`Aperçu de ${selectedCamera.name}`}
+                className="rounded-lg shadow-lg max-w-full"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
