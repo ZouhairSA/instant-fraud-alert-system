@@ -37,10 +37,6 @@ const Dashboard = () => {
   const totalPages = Math.ceil(alerts.length / alertsPerPage);
   const paginatedAlerts = alerts.slice((currentPage - 1) * alertsPerPage, currentPage * alertsPerPage);
 
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-  const [cameraToDelete, setCameraToDelete] = useState<string | null>(null);
-  const [contactToDelete, setContactToDelete] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
       try {
@@ -205,26 +201,8 @@ const Dashboard = () => {
               <Button variant="outline">
                 Profile Admin
               </Button>
-              <Link to="#">
-                <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="ghost" onClick={e => { e.preventDefault(); setLogoutDialogOpen(true); }}>Déconnexion</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Confirmer la déconnexion</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Êtes-vous sûr de vouloir vous déconnecter ?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Annuler</AlertDialogCancel>
-                      <AlertDialogAction asChild>
-                        <Link to="/login">Se déconnecter</Link>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+              <Link to="/login">
+                <Button variant="ghost">Déconnexion</Button>
               </Link>
             </div>
           </div>
@@ -348,7 +326,7 @@ const Dashboard = () => {
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => setCameraToDelete(camera.id)}
+                              onClick={() => handleDeleteCamera(camera.id)}
                             >
                               Supprimer
                             </Button>
@@ -487,7 +465,7 @@ const Dashboard = () => {
                           </select>
                         </TableCell>
                         <TableCell>
-                          <Button size="sm" variant="destructive" onClick={() => setContactToDelete(contact.id)}>
+                          <Button size="sm" variant="destructive" onClick={() => handleDeleteContact(contact.id)}>
                             Supprimer
                           </Button>
                         </TableCell>
@@ -510,40 +488,6 @@ const Dashboard = () => {
         onOpenChange={setIsDialogOpen}
         cameraUrl={selectedCamera?.url || ""}
       />
-
-      <AlertDialog open={!!cameraToDelete} onOpenChange={open => { if (!open) setCameraToDelete(null); }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-            <AlertDialogDescription>
-              Voulez-vous vraiment supprimer cette caméra ? Cette action est irréversible.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={() => { if (cameraToDelete) handleDeleteCamera(cameraToDelete); setCameraToDelete(null); }}>
-              Supprimer
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog open={!!contactToDelete} onOpenChange={open => { if (!open) setContactToDelete(null); }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-            <AlertDialogDescription>
-              Voulez-vous vraiment supprimer ce contact ? Cette action est irréversible.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={() => { if (contactToDelete) handleDeleteContact(contactToDelete); setContactToDelete(null); }}>
-              Supprimer
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
