@@ -93,7 +93,7 @@ const Index = () => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Camera className="h-8 w-8 text-primary" />
+            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
             <span className="text-xl font-bold">Détecteur de Triche</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
@@ -345,7 +345,7 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <Camera className="h-6 w-6" />
+                <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
                 <span className="text-lg font-bold">Détecteur de Triche</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">

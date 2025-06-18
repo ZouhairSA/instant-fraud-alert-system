@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,7 @@ const Login = () => {
         {/* Header */}
         <div className="text-center space-y-4">
           <Link to="/" className="inline-flex items-center space-x-2 text-2xl font-bold text-gray-900">
-            <Camera className="h-8 w-8 text-blue-600" />
+            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
             <span>Détecteur de Triche</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Connexion</h1>
