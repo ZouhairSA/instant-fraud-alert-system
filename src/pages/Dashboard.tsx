@@ -13,6 +13,7 @@ import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, order
 import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
 import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
@@ -39,6 +40,8 @@ const Dashboard = () => {
 
   const [cameraToDelete, setCameraToDelete] = useState<string | null>(null);
   const [contactToDelete, setContactToDelete] = useState<string | null>(null);
+
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchCamerasAndAlerts = async () => {
@@ -223,9 +226,26 @@ const Dashboard = () => {
               <Button variant="outline">
                 Profile Admin
               </Button>
-              <Link to="/login">
-                <Button variant="ghost">Déconnexion</Button>
-              </Link>
+              <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" onClick={e => { e.preventDefault(); setLogoutDialogOpen(true); }}>Déconnexion</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <ExclamationTriangleIcon className="w-12 h-12 text-yellow-500 mb-2" />
+                    <AlertDialogTitle className="text-2xl font-bold text-gray-900 mb-2">Confirmer la déconnexion</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-600 mb-4">
+                      Êtes-vous sûr de vouloir vous déconnecter ?
+                    </AlertDialogDescription>
+                  </div>
+                  <AlertDialogFooter className="flex flex-row justify-center gap-4 mt-2">
+                    <AlertDialogCancel className="px-6">Annuler</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Link to="/login" className="px-6 bg-red-600 hover:bg-red-700 text-white">Se déconnecter</Link>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>
@@ -346,25 +366,17 @@ const Dashboard = () => {
                               Voir
                             </Button>
                             <AlertDialog open={!!cameraToDelete} onOpenChange={open => { if (!open) setCameraToDelete(null); }}>
-                              <AlertDialogTrigger asChild>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setCameraToDelete(camera.id)}
-                                >
-                                  Supprimer
-                                </Button>
-                              </AlertDialogTrigger>
                               <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-                                  <AlertDialogDescription>
+                                <div className="flex flex-col items-center justify-center text-center">
+                                  <ExclamationTriangleIcon className="w-12 h-12 text-red-500 mb-2" />
+                                  <AlertDialogTitle className="text-2xl font-bold text-gray-900 mb-2">Confirmer la suppression</AlertDialogTitle>
+                                  <AlertDialogDescription className="text-gray-600 mb-4">
                                     Voulez-vous vraiment supprimer cette caméra ? Cette action est irréversible.
                                   </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => { if (cameraToDelete) handleDeleteCamera(cameraToDelete); setCameraToDelete(null); }}>
+                                </div>
+                                <AlertDialogFooter className="flex flex-row justify-center gap-4 mt-2">
+                                  <AlertDialogCancel className="px-6">Annuler</AlertDialogCancel>
+                                  <AlertDialogAction className="px-6 bg-red-600 hover:bg-red-700 text-white" onClick={() => { if (cameraToDelete) handleDeleteCamera(cameraToDelete); setCameraToDelete(null); }}>
                                     Supprimer
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
@@ -517,21 +529,17 @@ const Dashboard = () => {
                         </TableCell>
                         <TableCell>
                           <AlertDialog open={!!contactToDelete} onOpenChange={open => { if (!open) setContactToDelete(null); }}>
-                            <AlertDialogTrigger asChild>
-                              <Button size="sm" variant="destructive" onClick={() => setContactToDelete(contact.id)}>
-                                Supprimer
-                              </Button>
-                            </AlertDialogTrigger>
                             <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-                                <AlertDialogDescription>
+                              <div className="flex flex-col items-center justify-center text-center">
+                                <ExclamationTriangleIcon className="w-12 h-12 text-red-500 mb-2" />
+                                <AlertDialogTitle className="text-2xl font-bold text-gray-900 mb-2">Confirmer la suppression</AlertDialogTitle>
+                                <AlertDialogDescription className="text-gray-600 mb-4">
                                   Voulez-vous vraiment supprimer ce contact ? Cette action est irréversible.
                                 </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => { if (contactToDelete) handleDeleteContact(contactToDelete); setContactToDelete(null); }}>
+                              </div>
+                              <AlertDialogFooter className="flex flex-row justify-center gap-4 mt-2">
+                                <AlertDialogCancel className="px-6">Annuler</AlertDialogCancel>
+                                <AlertDialogAction className="px-6 bg-red-600 hover:bg-red-700 text-white" onClick={() => { if (contactToDelete) handleDeleteContact(contactToDelete); setContactToDelete(null); }}>
                                   Supprimer
                                 </AlertDialogAction>
                               </AlertDialogFooter>
