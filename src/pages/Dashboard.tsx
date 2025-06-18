@@ -16,6 +16,20 @@ import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 
+const typingDots = (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 48 }}>
+    <style>{`
+      @keyframes bounce {
+        0%, 80%, 100% { transform: scale(1); }
+        40% { transform: scale(1.4); }
+      }
+    `}</style>
+    <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#3b82f6', margin: 4, animation: 'bounce 1.4s infinite', animationDelay: '0s' }} />
+    <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#3b82f6', margin: 4, animation: 'bounce 1.4s infinite', animationDelay: '0.2s' }} />
+    <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#3b82f6', margin: 4, animation: 'bounce 1.4s infinite', animationDelay: '0.4s' }} />
+  </div>
+);
+
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
   const [alerts, setAlerts] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
@@ -472,7 +486,7 @@ const Dashboard = () => {
                       <p className="text-xs text-gray-600 mt-1">{alert.datetime}</p>
                     </div>
                   )) : (
-                    <div className="text-center text-gray-400 py-8">Aucune alerte à afficher.</div>
+                    <div className="text-center text-gray-400 py-8">{typingDots}</div>
                   )}
                 </div>
                 {/* Pagination Controls */}
