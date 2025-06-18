@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
+import { CameraModal } from "@/components/ui/CameraModal";
 
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
@@ -334,25 +335,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{selectedCamera?.name}</DialogTitle>
-            <DialogDescription>
-              Aperçu de la caméra
-            </DialogDescription>
-          </DialogHeader>
-          {selectedCamera && (
-            <div className="w-full flex justify-center items-center">
-              <img
-                src={`https://via.placeholder.com/640x360?text=${encodeURIComponent(selectedCamera.name)}`}
-                alt={`Aperçu de ${selectedCamera.name}`}
-                className="rounded-lg shadow-lg max-w-full"
-              />
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <CameraModal
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        cameraUrl={selectedCamera?.url || ""}
+      />
     </div>
   );
 };
