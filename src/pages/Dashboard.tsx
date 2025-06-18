@@ -158,6 +158,16 @@ const Dashboard = () => {
     { title: "Statut Système", value: "Opérationnel", icon: Users, trend: "100%" },
   ];
 
+  const handleDeleteContact = async (contactId) => {
+    try {
+      await deleteDoc(doc(db, "contacts", contactId));
+      setContacts(contacts => contacts.filter(c => c.id !== contactId));
+      toast({ title: "Contact supprimé", description: "Le contact a été supprimé avec succès." });
+    } catch (error) {
+      toast({ title: "Erreur", description: "Impossible de supprimer le contact.", variant: "destructive" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -417,6 +427,7 @@ const Dashboard = () => {
                       <TableHead>Email</TableHead>
                       <TableHead>Message</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -432,6 +443,11 @@ const Dashboard = () => {
                         <TableCell className="max-w-xs truncate">{contact.message}</TableCell>
                         <TableCell>
                           <Badge variant={contact.status === "new" ? "secondary" : "default"}>{contact.status}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="destructive" onClick={() => handleDeleteContact(contact.id)}>
+                            Supprimer
+                          </Button>
                         </TableCell>
                       </TableRow>
                     )) : (
