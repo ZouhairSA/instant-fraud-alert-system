@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Camera, Bell, Users, Key, ArrowUp, ArrowDown } from "lucide-react";
+import { Camera, Bell, Users, Key, ArrowUp, ArrowDown, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
@@ -177,6 +177,25 @@ const Dashboard = () => {
     } catch (error) {
       toast({ title: "Erreur", description: "Impossible de modifier le statut.", variant: "destructive" });
     }
+  };
+
+  // Fonction d'export CSV pour les contacts
+  const exportContactsCSV = () => {
+    if (!contacts.length) return;
+    const header = "date,name,email,message,status\n";
+    const rows = contacts.map(c => {
+      const date = c.createdAt?.seconds ? new Date(c.createdAt.seconds * 1000).toLocaleString() : c.createdAt || "";
+      return `"${date}","${c.name}","${c.email}","${(c.message || '').replace(/"/g, '""')}","${c.status}"`;
+    }).join("\n");
+    const csv = header + rows;
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "contacts.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -425,9 +444,20 @@ const Dashboard = () => {
 
             {/* Tableau des contacts reçus */}
             <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>Contacts reçus</CardTitle>
-                <CardDescription>Liste des messages reçus via le formulaire de contact</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between gap-2">
+                <div>
+                  <CardTitle>Contacts reçus</CardTitle>
+                  <CardDescription>Liste des messages reçus via le formulaire de contact</CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={exportContactsCSV}
+                  disabled={contacts.length === 0}
+                  title="Exporter en CSV"
+                >
+                  <Download className="w-5 h-5" />
+                </Button>
               </CardHeader>
               <CardContent className="overflow-x-auto">
                 <Table>
