@@ -1,6 +1,5 @@
-
 import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/firebase';
 
 export interface ContactMessage {
   id?: string;

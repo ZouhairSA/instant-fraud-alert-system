@@ -9,8 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
-import { app } from "../firebase"; // Assuming firebase.ts exports the initialized app
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
@@ -42,7 +42,6 @@ const Dashboard = () => {
   });
 
   const { toast } = useToast();
-  const db = getFirestore(app); // Obtenir l'instance Firestore
 
   const [selectedCamera, setSelectedCamera] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
