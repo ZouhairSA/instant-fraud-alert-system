@@ -52,6 +52,13 @@ const Login = () => {
         <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-300 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-100 opacity-30 rounded-full blur-2xl animate-float"></div>
       </div>
+      {/* Lien retour en haut */}
+      <div className="w-full flex justify-start mb-4 animate-fade-in z-20">
+        <Link to="/" className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors pl-2">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+          Retour à l'accueil
+        </Link>
+      </div>
       <div className="w-full max-w-md z-10">
         {/* Logo animé */}
         <div className="flex flex-col items-center mb-8 animate-fade-in">
@@ -130,12 +137,6 @@ const Login = () => {
               <span>Mot de passe : <span className="font-semibold">admin123</span></span>
             </div>
           </div>
-        </div>
-        {/* Back to Home */}
-        <div className="text-center mt-6 animate-fade-in delay-1000">
-          <Link to="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-            ← Retour à l'accueil
-          </Link>
         </div>
       </div>
       {/* Animations keyframes */}
