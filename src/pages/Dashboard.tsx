@@ -563,8 +563,8 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Tableau des contacts reçus */}
-            <Card className="mt-6">
+            {/* Section Contacts reçus déplacée ici */}
+            <Card className="mt-8">
               <CardHeader className="flex flex-row items-center justify-between gap-2">
                 <div>
                   <CardTitle>Contacts reçus</CardTitle>
@@ -652,11 +652,11 @@ const Dashboard = () => {
                           </AlertDialog>
                         </TableCell>
                       </TableRow>
-                    )) : (
+                    )) :
                       <TableRow>
                         <TableCell colSpan={5} className="text-center text-gray-400">Aucun contact reçu.</TableCell>
                       </TableRow>
-                    )}
+                    }
                   </TableBody>
                 </Table>
               </CardContent>
