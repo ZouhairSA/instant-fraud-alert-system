@@ -582,16 +582,7 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent className="overflow-x-auto">
                 <div className="mb-4 flex items-center gap-2">
-                  <label className="text-sm text-gray-600">Trier :</label>
-                  <select
-                    value={contactSortOrder}
-                    onChange={e => setContactSortOrder(e.target.value as 'desc' | 'asc')}
-                    className="px-3 py-2 rounded border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-                  >
-                    <option value="desc">Du plus récent au plus ancien</option>
-                    <option value="asc">Du plus ancien au plus récent</option>
-                  </select>
-                  <label className="text-sm text-gray-600 ml-4">Status :</label>
+                  <label className="text-sm text-gray-600 ml-0">Status :</label>
                   <select
                     value={contactStatusFilter}
                     onChange={e => setContactStatusFilter(e.target.value)}
