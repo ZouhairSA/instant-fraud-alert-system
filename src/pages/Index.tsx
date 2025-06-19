@@ -342,7 +342,7 @@ const Index = () => {
                     <MapPin className="w-6 h-6 text-blue-600 mr-2" />
                     <h3 className="text-2xl font-bold text-blue-700">Localisation</h3>
                   </div>
-                  <div className="w-full h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-blue-100 hover:scale-105 hover:shadow-blue-300 transition-all duration-300 mb-4 bg-white">
+                  <div className="w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-xl border-0 bg-white transition-transform duration-300 hover:scale-105">
                     <iframe
                       title="Localisation HESTIM"
                       src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
@@ -354,9 +354,9 @@ const Index = () => {
                       referrerPolicy="no-referrer-when-downgrade"
                     />
                   </div>
-                  <div className="flex items-center gap-2 text-blue-700 text-base font-medium bg-blue-50 rounded-lg px-4 py-2 shadow-sm">
+                  <div className="w-full flex items-center gap-2 text-blue-700 text-base font-medium bg-white rounded-xl px-4 py-3 shadow mt-4">
                     <MapPin className="w-5 h-5" />
-                    Adresse : 293 Bd Ghandi, Casablanca 20410
+                    <span className="truncate">Adresse : 293 Bd Ghandi, Casablanca 20410</span>
                   </div>
                 </div>
               </div>
