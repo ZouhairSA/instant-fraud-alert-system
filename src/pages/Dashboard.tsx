@@ -280,7 +280,6 @@ const Dashboard = () => {
             <div className="flex items-center space-x-4">
               <Link to="/" className="flex items-center space-x-2">
                 <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" width={40} height={40} />
-                <span className="text-xl font-bold text-gray-900">Détecteur de Triche</span>
               </Link>
               <div className="h-6 w-px bg-gray-300"></div>
               <h1 className="text-2xl font-semibold text-gray-900">Dashboard Administrateur</h1>

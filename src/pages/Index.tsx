@@ -94,7 +94,6 @@ const Index = () => {
         <div className="container flex flex-wrap md:flex-nowrap h-auto md:h-16 items-center justify-between px-2 md:px-6">
           <div className="flex items-center space-x-2 w-full md:w-auto justify-center md:justify-start py-2 md:py-0">
             <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-8 md:h-10 w-auto mr-2" />
-            <span className="text-lg md:text-xl font-bold">Détecteur de Triche</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
@@ -352,7 +351,6 @@ const Index = () => {
             <div className="space-y-4 flex flex-col items-center md:items-start">
               <div className="flex items-center space-x-2 justify-center md:justify-start">
                 <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-8 md:h-10 w-auto mr-2" />
-                <span className="text-lg font-bold">Détecteur de Triche</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Sécurité en temps réel pour un monde plus sûr.
