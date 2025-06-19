@@ -52,20 +52,17 @@ const Login = () => {
         <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-300 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-100 opacity-30 rounded-full blur-2xl animate-float"></div>
       </div>
-      {/* Lien retour en haut */}
-      <div className="w-full flex justify-start mb-4 animate-fade-in z-20">
-        <Link to="/" className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors pl-2">
+      {/* Header avec logo à gauche et retour à droite */}
+      <div className="flex items-center justify-between mb-8 animate-fade-in w-full max-w-md mx-auto">
+        <Link to="/" className="inline-flex items-center justify-center">
+          <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-14 w-auto drop-shadow-xl animate-fade-in" />
+        </Link>
+        <Link to="/" className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
           Retour à l'accueil
         </Link>
       </div>
       <div className="w-full max-w-md z-10">
-        {/* Logo animé */}
-        <div className="flex flex-col items-center mb-8 animate-fade-in">
-          <Link to="/" className="inline-flex items-center justify-center">
-            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-14 w-auto drop-shadow-xl animate-fade-in" />
-          </Link>
-        </div>
         {/* Carte de connexion glassmorphism */}
         <div className="backdrop-blur-xl bg-white/60 border border-white/40 rounded-3xl shadow-2xl p-8 animate-slide-in-up">
           <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-2 animate-fade-in">Connexion</h1>
