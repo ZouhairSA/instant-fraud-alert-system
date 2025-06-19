@@ -104,6 +104,33 @@ const Login = () => {
           </p>
         </div>
       </div>
+      {/* Section de copie email/password démo */}
+      <div className="mt-6 w-full max-w-md flex flex-col items-center gap-2 text-sm bg-blue-50 border border-blue-100 rounded-xl p-4 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold">Email :</span>
+          <span className="select-all">admin@detectorapp.com</span>
+          <button
+            type="button"
+            className="ml-1 px-2 py-1 bg-blue-200 hover:bg-blue-300 rounded text-xs text-blue-800 font-semibold transition-colors"
+            onClick={() => navigator.clipboard.writeText('admin@detectorapp.com')}
+            title="Copier l'email"
+          >
+            Copier
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-semibold">Mot de passe :</span>
+          <span className="select-all">admin123</span>
+          <button
+            type="button"
+            className="ml-1 px-2 py-1 bg-blue-200 hover:bg-blue-300 rounded text-xs text-blue-800 font-semibold transition-colors"
+            onClick={() => navigator.clipboard.writeText('admin123')}
+            title="Copier le mot de passe"
+          >
+            Copier
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
