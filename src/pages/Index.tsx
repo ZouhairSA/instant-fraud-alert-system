@@ -267,10 +267,10 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10 items-stretch">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
             {/* Formulaire de contact */}
-            <div className="flex-1 bg-white rounded-2xl shadow-xl p-8 flex flex-col justify-center">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col justify-center h-full min-h-[28rem] md:min-h-[32rem]">
+              <form onSubmit={handleSubmit} className="space-y-6 h-full">
                 <div className="space-y-2">
                   <Label htmlFor="name">Nom complet</Label>
                   <Input
@@ -322,16 +322,17 @@ const Index = () => {
               </div>
             </div>
             {/* Carte Google Maps */}
-            <div className="w-full h-96 md:h-[32rem] rounded-2xl overflow-hidden shadow-xl mb-4 border border-gray-200">
+            <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 h-full min-h-[28rem] md:min-h-[32rem] flex flex-col justify-center">
               <iframe
                 src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
                 width="100%"
                 height="100%"
-                style={{ border: 0 }}
+                style={{ border: 0, minHeight: '100%' }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Localisation"
+                className="flex-1"
               ></iframe>
             </div>
           </div>
