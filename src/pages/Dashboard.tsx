@@ -571,14 +571,13 @@ const Dashboard = () => {
                   <CardDescription>Liste des messages reçus via le formulaire de contact</CardDescription>
                 </div>
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow px-5 py-2 transition-all duration-200 flex items-center gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow rounded-full p-2 transition-all duration-200 flex items-center justify-center"
                   size="icon"
                   onClick={exportContactsCSV}
                   disabled={contacts.length === 0}
                   title="Exporter en CSV"
                 >
-                  <Download className="w-5 h-5 mr-1" />
-                  Exporter CSV
+                  <Download className="w-6 h-6" />
                 </Button>
               </CardHeader>
               <CardContent className="overflow-x-auto">
