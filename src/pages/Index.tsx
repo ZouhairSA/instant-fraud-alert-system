@@ -264,101 +264,78 @@ const Index = () => {
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-gray-50">
-        <div className="container px-4 md:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Contactez-nous
-              </h2>
-              <p className="text-lg text-gray-600">
-                Vous avez des questions ? Nous sommes là pour vous aider.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-              {/* Formulaire de contact */}
-              <Card className="bg-white shadow-2xl border-0 rounded-2xl">
-                <CardContent className="p-8">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Nom complet</Label>
-                      <Input
-                        id="name"
-                        placeholder="Votre nom"
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        required
-                        disabled={isSubmitting}
-                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="votre@email.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        required
-                        disabled={isSubmitting}
-                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message</Label>
-                      <Textarea
-                        id="message"
-                        placeholder="Votre message..."
-                        rows={4}
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        required
-                        disabled={isSubmitting}
-                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
-                      />
-                    </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg shadow-md transition-all duration-200"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
-                    </Button>
-                  </form>
-                  <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-                    <p className="text-gray-600">
-                      Ou contactez-nous directement à : 
-                      <a href="mailto:contact@detectorapp.com" className="text-blue-600 hover:text-blue-800 font-medium ml-1">
-                        contact@detectorapp.com
-                      </a>
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Carte de localisation */}
-              <div className="w-full h-full flex flex-col items-center justify-start">
-                <div className="flex flex-col items-center w-full">
-                  <div className="flex items-center justify-center mb-4">
-                    <MapPin className="w-6 h-6 text-blue-600 mr-2" />
-                    <h3 className="text-2xl font-bold text-blue-700">Localisation</h3>
-                  </div>
-                  <div className="w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-xl border-0 bg-white transition-transform duration-300 hover:scale-105">
-                    <iframe
-                      title="Localisation HESTIM"
-                      src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen={true}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                  <div className="w-full flex items-center gap-2 text-blue-700 text-base font-medium bg-white rounded-xl px-4 py-3 shadow mt-4">
-                    <MapPin className="w-5 h-5" />
-                    <span className="truncate">Adresse : 293 Bd Ghandi, Casablanca 20410</span>
-                  </div>
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10 items-stretch">
+            {/* Formulaire de contact */}
+            <div className="flex-1 bg-white rounded-2xl shadow-xl p-8 flex flex-col justify-center">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nom complet</Label>
+                  <Input
+                    id="name"
+                    placeholder="Votre nom"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
+                    disabled={isSubmitting}
+                    className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
+                  />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="votre@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    required
+                    disabled={isSubmitting}
+                    className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Votre message..."
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    required
+                    disabled={isSubmitting}
+                    className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg shadow-md transition-all duration-200"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                </Button>
+              </form>
+              <div className="mt-6 text-center text-sm text-gray-500">
+                Ou contactez-nous directement à <a href="mailto:contact@detectorapp.com" className="text-blue-600 underline">contact@detectorapp.com</a>
+              </div>
+            </div>
+            {/* Carte Google Maps */}
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <div className="w-full h-80 rounded-2xl overflow-hidden shadow-xl mb-4 border border-gray-200">
+                <iframe
+                  src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Localisation"
+                ></iframe>
+              </div>
+              <div className="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow text-blue-700 font-semibold">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 1011.314-11.314l-4.243 4.243z" /></svg>
+                Adresse : 293 Bd Ghandi, Casablanca 20410
               </div>
             </div>
           </div>
