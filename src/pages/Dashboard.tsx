@@ -252,6 +252,8 @@ const Dashboard = () => {
   const [contactDateFilter, setContactDateFilter] = useState("");
   // State pour le tri contacts
   const [contactSortOrder, setContactSortOrder] = useState<'desc' | 'asc'>('desc');
+  // State pour le filtre status contact
+  const [contactStatusFilter, setContactStatusFilter] = useState('all');
 
   // Filtrage caméras
   const filteredCameras = cameras.filter(camera =>
@@ -263,6 +265,10 @@ const Dashboard = () => {
     const bTime = b.createdAt?.seconds || 0;
     return contactSortOrder === 'desc' ? bTime - aTime : aTime - bTime;
   });
+  // Filtrage + tri contacts
+  const filteredSortedContacts = sortedContacts.filter(contact =>
+    contactStatusFilter === 'all' ? true : contact.status === contactStatusFilter
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -584,6 +590,16 @@ const Dashboard = () => {
                     <option value="desc">Du plus récent au plus ancien</option>
                     <option value="asc">Du plus ancien au plus récent</option>
                   </select>
+                  <label className="text-sm text-gray-600 ml-4">Status :</label>
+                  <select
+                    value={contactStatusFilter}
+                    onChange={e => setContactStatusFilter(e.target.value)}
+                    className="px-3 py-2 rounded border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                  >
+                    <option value="all">Tous</option>
+                    <option value="new">new</option>
+                    <option value="done">done</option>
+                  </select>
                 </div>
                 <Table>
                   <TableHeader>
@@ -597,7 +613,7 @@ const Dashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {sortedContacts.length > 0 ? sortedContacts.map(contact => (
+                    {filteredSortedContacts.length > 0 ? filteredSortedContacts.map(contact => (
                       <TableRow className="transition-colors hover:bg-blue-50 dark:hover:bg-blue-900">
                         <TableCell className="whitespace-nowrap text-xs">
                           {contact.createdAt?.seconds
