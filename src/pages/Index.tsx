@@ -322,23 +322,17 @@ const Index = () => {
               </div>
             </div>
             {/* Carte Google Maps */}
-            <div className="flex-1 flex flex-col items-center justify-center">
-              <div className="w-full h-80 rounded-2xl overflow-hidden shadow-xl mb-4 border border-gray-200">
-                <iframe
-                  src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Localisation"
-                ></iframe>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow text-blue-700 font-semibold">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 1011.314-11.314l-4.243 4.243z" /></svg>
-                Adresse : 293 Bd Ghandi, Casablanca 20410
-              </div>
+            <div className="w-full h-96 md:h-[32rem] rounded-2xl overflow-hidden shadow-xl mb-4 border border-gray-200">
+              <iframe
+                src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Localisation"
+              ></iframe>
             </div>
           </div>
         </div>
