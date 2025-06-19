@@ -114,46 +114,49 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50 py-20 md:py-32">
-        <div className="container px-2 md:px-4 lg:px-6">
+      <section className="relative py-24 md:py-32 bg-gradient-to-br from-blue-50 via-white to-blue-100 overflow-hidden">
+        <div className="container px-2 md:px-4 lg:px-6 relative z-10">
           <div className="flex flex-col items-center space-y-8 text-center">
             <div className="space-y-4 animate-fade-in">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-gray-900">
-                Système Intelligent de
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight">
+                Protégez vos examens et concours<br />
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
-                  Détection de Triche
+                  Détection de Triche Instantanée
                 </span>
-                en Temps Réel
+                par Intelligence Artificielle
               </h1>
-              <p className="mx-auto max-w-2xl text-lg md:text-xl text-gray-600 leading-relaxed">
-                Analyse automatique des caméras et détection instantanée des fraudes
+              <p className="mx-auto max-w-2xl text-xl md:text-2xl text-gray-700 leading-relaxed font-medium">
+                Surveillez, détectez et agissez en temps réel grâce à notre plateforme intelligente et sécurisée.
               </p>
             </div>
-            
             <div className="flex flex-col sm:flex-row gap-4 animate-scale-in w-full justify-center">
-              <Link to="/login" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg transition-all duration-300 hover-scale">
-                  Commencer
+              <Link to="/dashboard" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg font-bold shadow-lg transition-all duration-300 hover:scale-105">
+                  Tester la démo
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 text-lg transition-all duration-300 hover-scale">
-                En savoir plus
-              </Button>
+              <a href="#contact" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 text-lg font-bold border-blue-600 text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105">
+                  Nous contacter
+                </Button>
+              </a>
             </div>
-
-            <div className="mt-8 animate-fade-in w-full">
+            <div className="mt-10 animate-fade-in w-full flex justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&crop=center"
+                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&h=400&fit=crop&crop=center"
                 alt="Technologie de surveillance avancée"
-                className="rounded-2xl shadow-2xl mx-auto max-w-full w-full md:max-w-4xl"
+                className="rounded-2xl shadow-2xl mx-auto max-w-full w-full md:max-w-4xl border-4 border-white"
+                loading="lazy"
               />
             </div>
           </div>
         </div>
-        
+        {/* Illustration décorative en fond */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-100 rounded-full opacity-30 blur-3xl z-0"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl z-0"></div>
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowDown className="h-6 w-6 text-gray-400" />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+          <ArrowDown className="h-8 w-8 text-blue-400" />
         </div>
       </section>
 
