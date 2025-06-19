@@ -45,24 +45,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <Link to="/" className="inline-flex items-center space-x-2 text-2xl font-bold text-gray-900">
-            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto mr-2" />
-            <span>Détecteur de Triche</span>
+        <div className="flex flex-col items-center space-y-4 animate-fade-in">
+          <Link to="/" className="inline-flex items-center justify-center">
+            <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-12 w-auto" />
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Connexion</h1>
-          <p className="text-gray-600">Accédez à votre dashboard de surveillance</p>
         </div>
-
         {/* Login Form */}
-        <Card className="shadow-xl border-0">
+        <Card className="shadow-2xl border-0 animate-scale-in">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-semibold text-center">Se connecter</CardTitle>
-            <CardDescription className="text-center">
-              Entrez vos identifiants pour accéder à votre compte
+            <CardTitle className="text-3xl font-extrabold text-center text-gray-900">Connexion</CardTitle>
+            <CardDescription className="text-center text-gray-600 text-base">
+              Accédez à votre dashboard de surveillance
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -76,10 +72,9 @@ const Login = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
-                  className="h-11"
+                  className="h-12 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg transition-all duration-200"
                 />
               </div>
-              
               <div className="space-y-2">
                 <Label htmlFor="password">Mot de passe</Label>
                 <Input
@@ -89,56 +84,54 @@ const Login = () => {
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                   required
-                  className="h-11"
+                  className="h-12 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg transition-all duration-200"
                 />
               </div>
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <input type="checkbox" id="remember" className="rounded border-gray-300" />
                   <Label htmlFor="remember" className="text-sm text-gray-600">Se souvenir de moi</Label>
                 </div>
-                <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
-                  Mot de passe oublié ?
-                </Link>
+                <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800 transition-colors">Mot de passe oublié ?</Link>
               </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full h-11 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-lg font-bold shadow-lg transition-all duration-200 hover:scale-105"
                 disabled={isLoading}
               >
-                {isLoading ? "Connexion..." : "Se connecter"}
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    Connexion...
+                  </span>
+                ) : (
+                  "Se connecter"
+                )}
               </Button>
             </form>
-
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Pas encore de compte ?{" "}
-                <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
-                  Créer un compte
-                </Link>
+                Pas encore de compte ?{' '}
+                <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium transition-colors">Créer un compte</Link>
               </p>
             </div>
           </CardContent>
         </Card>
-
         {/* Demo Credentials */}
-        <Card className="border border-amber-200 bg-amber-50">
+        <Card className="border-0 bg-gradient-to-br from-amber-100 to-amber-50 shadow animate-fade-in">
           <CardContent className="pt-6">
-            <p className="text-sm text-amber-800 text-center mb-2">
-              <strong>Démonstration</strong>
+            <p className="text-base font-bold text-amber-900 text-center mb-2">
+              Démonstration
             </p>
-            <p className="text-xs text-amber-700 text-center">
-              Email: admin@detectorapp.com<br />
-              Mot de passe: admin123
-            </p>
+            <div className="flex flex-col items-center gap-1 text-sm text-amber-800">
+              <span>Email : <span className="font-semibold">admin@detectorapp.com</span></span>
+              <span>Mot de passe : <span className="font-semibold">admin123</span></span>
+            </div>
           </CardContent>
         </Card>
-
         {/* Back to Home */}
-        <div className="text-center">
-          <Link to="/" className="text-sm text-gray-600 hover:text-gray-900">
+        <div className="text-center animate-fade-in">
+          <Link to="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
             ← Retour à l'accueil
           </Link>
         </div>
