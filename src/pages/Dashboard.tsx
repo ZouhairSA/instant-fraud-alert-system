@@ -250,21 +250,19 @@ const Dashboard = () => {
   const [cameraFilter, setCameraFilter] = useState("");
   // State pour le filtre date contact
   const [contactDateFilter, setContactDateFilter] = useState("");
+  // State pour le tri contacts
+  const [contactSortOrder, setContactSortOrder] = useState<'desc' | 'asc'>('desc');
 
   // Filtrage caméras
   const filteredCameras = cameras.filter(camera =>
     camera.name.toLowerCase().includes(cameraFilter.toLowerCase())
   );
   // Filtrage contacts
-  const filteredContacts = contactDateFilter
-    ? contacts.filter(c => {
-        if (!c.createdAt) return false;
-        const date = c.createdAt?.seconds
-          ? new Date(c.createdAt.seconds * 1000).toISOString().slice(0, 10)
-          : c.createdAt.slice(0, 10);
-        return date === contactDateFilter;
-      }).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
-    : contacts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+  const sortedContacts = [...contacts].sort((a, b) => {
+    const aTime = a.createdAt?.seconds || 0;
+    const bTime = b.createdAt?.seconds || 0;
+    return contactSortOrder === 'desc' ? bTime - aTime : aTime - bTime;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -406,7 +404,7 @@ const Dashboard = () => {
                     placeholder="Filtrer par nom de caméra..."
                     value={cameraFilter}
                     onChange={e => setCameraFilter(e.target.value)}
-                    className="px-3 py-2 rounded bg-green-100 border border-green-300 text-green-900 placeholder-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="px-3 py-2 rounded border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
                   />
                 </div>
                 <Table>
@@ -577,20 +575,15 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent className="overflow-x-auto">
                 <div className="mb-4 flex items-center gap-2">
-                  <input
-                    type="date"
-                    value={contactDateFilter}
-                    onChange={e => setContactDateFilter(e.target.value)}
-                    className="px-3 py-2 rounded bg-blue-50 border border-blue-200 text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                  {contactDateFilter && (
-                    <button
-                      onClick={() => setContactDateFilter("")}
-                      className="ml-2 px-2 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    >
-                      Réinitialiser
-                    </button>
-                  )}
+                  <label className="text-sm text-gray-600">Trier :</label>
+                  <select
+                    value={contactSortOrder}
+                    onChange={e => setContactSortOrder(e.target.value as 'desc' | 'asc')}
+                    className="px-3 py-2 rounded border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                  >
+                    <option value="desc">Du plus récent au plus ancien</option>
+                    <option value="asc">Du plus ancien au plus récent</option>
+                  </select>
                 </div>
                 <Table>
                   <TableHeader>
@@ -604,7 +597,7 @@ const Dashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredContacts.length > 0 ? filteredContacts.map(contact => (
+                    {sortedContacts.length > 0 ? sortedContacts.map(contact => (
                       <TableRow className="transition-colors hover:bg-blue-50 dark:hover:bg-blue-900">
                         <TableCell className="whitespace-nowrap text-xs">
                           {contact.createdAt?.seconds

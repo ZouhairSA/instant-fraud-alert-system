@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Camera, Bell, Users, Key, ArrowDown } from "lucide-react";
+import { Camera, Bell, Users, Key, ArrowDown, MapPin } from "lucide-react";
 import { submitContactForm } from "@/services/contactService";
 import { useToast } from "@/hooks/use-toast";
 
@@ -274,9 +274,9 @@ const Index = () => {
                 Vous avez des questions ? Nous sommes là pour vous aider.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
               {/* Formulaire de contact */}
-              <Card className="shadow-xl border-0">
+              <Card className="bg-white shadow-2xl border-0 rounded-2xl">
                 <CardContent className="p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
@@ -288,6 +288,7 @@ const Index = () => {
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         required
                         disabled={isSubmitting}
+                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
                       />
                     </div>
                     <div className="space-y-2">
@@ -300,6 +301,7 @@ const Index = () => {
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                         disabled={isSubmitting}
+                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
                       />
                     </div>
                     <div className="space-y-2">
@@ -312,11 +314,12 @@ const Index = () => {
                         onChange={(e) => setFormData({...formData, message: e.target.value})}
                         required
                         disabled={isSubmitting}
+                        className="focus:ring-2 focus:ring-blue-400 focus:border-blue-400 rounded-lg"
                       />
                     </div>
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                      className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg shadow-md transition-all duration-200"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
@@ -334,21 +337,27 @@ const Index = () => {
               </Card>
               {/* Carte de localisation */}
               <div className="w-full h-full flex flex-col items-center justify-start">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">Localisation</h3>
-                <div className="w-full h-72 md:h-96 rounded-xl overflow-hidden shadow-lg mb-4">
-                  <iframe
-                    title="Localisation HESTIM"
-                    src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen={true}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-                <div className="text-gray-600 text-center text-sm">
-                  Adresse : 293 Bd Ghandi, Casablanca 20410
+                <div className="flex flex-col items-center w-full">
+                  <div className="flex items-center justify-center mb-4">
+                    <MapPin className="w-6 h-6 text-blue-600 mr-2" />
+                    <h3 className="text-2xl font-bold text-blue-700">Localisation</h3>
+                  </div>
+                  <div className="w-full h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-blue-100 hover:scale-105 hover:shadow-blue-300 transition-all duration-300 mb-4 bg-white">
+                    <iframe
+                      title="Localisation HESTIM"
+                      src="https://www.google.com/maps?q=293+Bd+Ghandi,+Casablanca+20410&output=embed"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 text-blue-700 text-base font-medium bg-blue-50 rounded-lg px-4 py-2 shadow-sm">
+                    <MapPin className="w-5 h-5" />
+                    Adresse : 293 Bd Ghandi, Casablanca 20410
+                  </div>
                 </div>
               </div>
             </div>
