@@ -15,21 +15,25 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
   const [loading, setLoading] = React.useState(false);
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
+  // Utilise un flux HLS alternatif si mux.dev (pour contourner CORS ou test)
+  const effectiveCameraUrl = cameraUrl && cameraUrl.includes('mux.dev')
+    ? 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
+    : cameraUrl;
   React.useEffect(() => {
-    if (!open || !cameraUrl) return;
+    if (!open || !effectiveCameraUrl) return;
     setError(null);
     setLoading(true);
     let hls: Hls | null = null;
     const video = videoRef.current;
-    // Timeout pour éviter un chargement infini
     const timeout = setTimeout(() => {
       setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
       setLoading(false);
     }, 8000);
     if (video) {
+      console.log('Tentative de lecture du flux HLS:', effectiveCameraUrl);
       if (Hls.isSupported()) {
         hls = new Hls();
-        hls.loadSource(cameraUrl);
+        hls.loadSource(effectiveCameraUrl);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           clearTimeout(timeout);
@@ -42,7 +46,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
           setLoading(false);
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = cameraUrl;
+        video.src = effectiveCameraUrl;
         video.addEventListener('loadedmetadata', () => {
           clearTimeout(timeout);
           setLoading(false);
@@ -63,7 +67,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
       if (hls) hls.destroy();
       clearTimeout(timeout);
     };
-  }, [cameraUrl, open]);
+  }, [effectiveCameraUrl, open]);
 
   // Animation trois points
   const typingDots = (
