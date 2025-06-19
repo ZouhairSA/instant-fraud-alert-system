@@ -2,6 +2,7 @@ import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./dialog";
 // Si tu n'as pas @radix-ui/react-icons, installe-le ou remplace par une icône SVG
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import Hls from "hls.js";
 
 interface CameraModalProps {
   open: boolean;
@@ -12,22 +13,45 @@ interface CameraModalProps {
 export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps) {
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
 
-  React.useEffect(() => {
-    setError(null);
-    setLoading(!!cameraUrl && open);
-  }, [cameraUrl, open]);
-
-  // Pour iframe, l'événement onError ne fonctionne pas toujours selon la source.
-  // On peut afficher un timeout si le flux ne charge pas.
   React.useEffect(() => {
     if (!open || !cameraUrl) return;
+    setError(null);
     setLoading(true);
-    const timeout = setTimeout(() => {
-      setError("Impossible d'afficher la caméra. L'URL est incorrecte ou la caméra n'est pas active.");
-      setLoading(false);
-    }, 5000); // 5s pour charger
-    return () => clearTimeout(timeout);
+    let hls: Hls | null = null;
+    const video = videoRef.current;
+    if (video) {
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(cameraUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          setLoading(false);
+          video.play();
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          setError("Impossible d'afficher la caméra. Le flux vidéo est inaccessible ou non compatible.");
+          setLoading(false);
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = cameraUrl;
+        video.addEventListener('loadedmetadata', () => {
+          setLoading(false);
+          video.play();
+        });
+        video.addEventListener('error', () => {
+          setError("Impossible d'afficher la caméra. Le flux vidéo est inaccessible ou non compatible.");
+          setLoading(false);
+        });
+      } else {
+        setError("Votre navigateur ne supporte pas la lecture de ce flux vidéo.");
+        setLoading(false);
+      }
+    }
+    return () => {
+      if (hls) hls.destroy();
+    };
   }, [cameraUrl, open]);
 
   // Animation trois points
@@ -55,12 +79,12 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
               <p className="mt-4 text-lg text-gray-500">Chargement du flux vidéo...</p>
             </div>
           ) : !error ? (
-            <iframe
-              src={cameraUrl}
-              title="Camera Stream"
+            <video
+              ref={videoRef}
+              controls
+              autoPlay
               className="w-full h-[480px] rounded-xl border shadow-lg bg-black"
-              allow="autoplay; encrypted-media"
-              onLoad={() => setLoading(false)}
+              style={{ display: loading ? 'none' : 'block' }}
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-[480px] text-center">
