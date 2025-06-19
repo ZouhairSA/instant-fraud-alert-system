@@ -46,8 +46,14 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 via-white to-blue-200">
-      {/* Logo centré en haut */}
-      <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-14 w-auto mb-8 mt-8" />
+      {/* Logo centré en haut, cliquable pour revenir à la page précédente */}
+      <img
+        src="/hestimLogo.png"
+        alt="HESTIM Logo"
+        className="h-14 w-auto mb-8 mt-8 cursor-pointer"
+        onClick={() => window.history.back()}
+        title="Retour"
+      />
       {/* Formulaire de connexion simple */}
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-gray-900 mb-4">Connexion</h1>
@@ -57,7 +63,7 @@ const Login = () => {
             <Input
               id="email"
               type="email"
-              placeholder="Votre email"
+              placeholder="Saisissez votre email"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
@@ -69,7 +75,7 @@ const Login = () => {
             <Input
               id="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Saisissez votre mot de passe"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
