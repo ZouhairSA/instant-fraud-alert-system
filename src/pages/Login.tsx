@@ -45,16 +45,10 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 via-white to-blue-300 overflow-hidden">
-      {/* Bulles animées en fond */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-40 h-40 bg-blue-400 opacity-20 rounded-full blur-3xl animate-bounce-slow"></div>
-        <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-300 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-100 opacity-30 rounded-full blur-2xl animate-float"></div>
-      </div>
-      {/* Header flottant moderne */}
-      <div className="w-full flex justify-center mb-10 animate-fade-in z-20">
-        <div className="flex items-center justify-between w-full max-w-md bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg px-4 py-2 mt-6">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-blue-200 via-white to-blue-300 overflow-hidden">
+      {/* Header flottant moderne en haut */}
+      <div className="w-full flex justify-center pt-8 animate-fade-in z-20">
+        <div className="flex items-center justify-between w-full max-w-md bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg px-4 py-2">
           <Link to="/" className="inline-flex items-center justify-center">
             <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-10 w-auto drop-shadow animate-fade-in" />
           </Link>
@@ -64,9 +58,16 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full max-w-md z-10">
+      {/* Bulles animées en fond */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-10 left-10 w-40 h-40 bg-blue-400 opacity-20 rounded-full blur-3xl animate-bounce-slow"></div>
+        <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-300 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-100 opacity-30 rounded-full blur-2xl animate-float"></div>
+      </div>
+      {/* Formulaire centré verticalement */}
+      <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto z-10">
         {/* Carte de connexion glassmorphism */}
-        <div className="backdrop-blur-xl bg-white/60 border border-white/40 rounded-3xl shadow-2xl p-8 animate-slide-in-up">
+        <div className="backdrop-blur-xl bg-white/60 border border-white/40 rounded-3xl shadow-2xl p-8 animate-slide-in-up w-full">
           <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-2 animate-fade-in">Connexion</h1>
           <p className="text-center text-gray-600 text-base mb-6 animate-fade-in delay-100">Accédez à votre dashboard de surveillance</p>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -125,8 +126,8 @@ const Login = () => {
           </div>
         </div>
         {/* Encart démo animé */}
-        <div className="mt-8 animate-slide-in-up delay-500">
-          <div className="flex flex-col items-center justify-center bg-gradient-to-br from-amber-100 to-amber-50 border-0 rounded-2xl shadow-lg px-6 py-4 gap-2">
+        <div className="mt-8 animate-slide-in-up delay-500 w-full">
+          <div className="flex flex-col items-center justify-center bg-gradient-to-br from-amber-100 to-amber-50 border-0 rounded-2xl shadow-lg px-6 py-4 gap-2 w-full">
             <div className="flex items-center gap-2 mb-1">
               <svg className="w-6 h-6 text-amber-500 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
               <span className="font-bold text-amber-900 text-base">Démonstration</span>
@@ -138,6 +139,14 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {/* Footer moderne en bas */}
+      <footer className="w-full mt-auto py-6 bg-white/60 backdrop-blur-lg shadow-inner flex flex-col items-center justify-center z-10">
+        <div className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} HESTIM - Détecteur de Triche. Tous droits réservés.</div>
+        <div className="flex gap-4 mt-2">
+          <a href="#" className="text-blue-600 hover:text-blue-800 transition-colors text-xs">Mentions légales</a>
+          <a href="#" className="text-blue-600 hover:text-blue-800 transition-colors text-xs">Confidentialité</a>
+        </div>
+      </footer>
       {/* Animations keyframes */}
       <style>{`
         @keyframes bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
