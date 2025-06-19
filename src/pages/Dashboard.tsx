@@ -16,6 +16,8 @@ import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 
+// Changement mineur pour forcer un commit/push
+
 const typingDots = (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 48 }}>
     <style>{`
