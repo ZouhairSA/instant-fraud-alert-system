@@ -21,36 +21,47 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
     setLoading(true);
     let hls: Hls | null = null;
     const video = videoRef.current;
+    // Timeout pour éviter un chargement infini
+    const timeout = setTimeout(() => {
+      setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
+      setLoading(false);
+    }, 8000);
     if (video) {
       if (Hls.isSupported()) {
         hls = new Hls();
         hls.loadSource(cameraUrl);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          clearTimeout(timeout);
           setLoading(false);
           video.play();
         });
         hls.on(Hls.Events.ERROR, (event, data) => {
-          setError("Impossible d'afficher la caméra. Le flux vidéo est inaccessible ou non compatible.");
+          clearTimeout(timeout);
+          setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
           setLoading(false);
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = cameraUrl;
         video.addEventListener('loadedmetadata', () => {
+          clearTimeout(timeout);
           setLoading(false);
           video.play();
         });
         video.addEventListener('error', () => {
-          setError("Impossible d'afficher la caméra. Le flux vidéo est inaccessible ou non compatible.");
+          clearTimeout(timeout);
+          setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
           setLoading(false);
         });
       } else {
+        clearTimeout(timeout);
         setError("Votre navigateur ne supporte pas la lecture de ce flux vidéo.");
         setLoading(false);
       }
     }
     return () => {
       if (hls) hls.destroy();
+      clearTimeout(timeout);
     };
   }, [cameraUrl, open]);
 
@@ -76,7 +87,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
           {loading && !error ? (
             <div className="flex flex-col items-center justify-center h-[480px] text-center">
               {typingDots}
-              <p className="mt-4 text-lg text-gray-500">Chargement du flux vidéo...</p>
+              <p className="mt-4 text-lg text-gray-500">Vérification du flux vidéo en cours...</p>
             </div>
           ) : !error ? (
             <video
