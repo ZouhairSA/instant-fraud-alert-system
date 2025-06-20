@@ -86,7 +86,7 @@ const Login = () => {
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 focus:outline-none flex items-center justify-center"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 focus:outline-none flex items-center justify-center h-6 w-6"
               aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
               style={{ padding: 0, background: 'none', border: 'none' }}
             >
