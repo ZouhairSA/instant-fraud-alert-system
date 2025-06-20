@@ -43,7 +43,8 @@ const Dashboard = () => {
   const [newCamera, setNewCamera] = useState({
     name: "",
     url: "",
-    api_link: "https://api-tricherie-hestim.onrender.com/api/detect"
+    api_link: "https://api-tricherie-hestim.onrender.com/api/detect",
+    apiType: "Render"
   });
 
   const { toast } = useToast();
@@ -130,11 +131,15 @@ const Dashboard = () => {
     try {
       const docRef = await addDoc(collection(db, "cameras"), {
         ...newCamera,
-        status: "active", // Default status
-        createdAt: serverTimestamp() // Ajoute la date de création Firestore
+        status: "active",
+        createdAt: serverTimestamp(),
+        apiType: newCamera.apiType
       });
-      setCameras(prevCameras => [...prevCameras, { id: docRef.id, ...newCamera, status: "active", createdAt: new Date() }]);
-      setNewCamera({ name: "", url: "", api_link: "https://api-tricherie-hestim.onrender.com/api/detect" });
+      setCameras(prevCameras => [
+        ...prevCameras,
+        { id: docRef.id, ...newCamera, status: "active", createdAt: new Date(), apiType: newCamera.apiType }
+      ]);
+      setNewCamera({ name: "", url: "", api_link: "https://api-tricherie-hestim.onrender.com/api/detect", apiType: "Render" });
       toast({
         title: "Caméra ajoutée",
         description: `${newCamera.name} a été ajoutée avec succès.`,
@@ -516,12 +521,32 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="api-type">Type de Modèle</Label>
+                    <select
+                      id="api-type"
+                      className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-400"
+                      value={newCamera.apiType}
+                      onChange={e => setNewCamera({ ...newCamera, apiType: e.target.value })}
+                      required
+                    >
+                      <option value="Render">Détection de triche (Render)</option>
+                      <option value="YOLO">Object Detection YOLO (Flask)</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="api-link">Modèle d'API</Label>
                     <select
                       id="api-link"
                       className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-400"
                       value={newCamera.api_link}
-                      onChange={e => setNewCamera({ ...newCamera, api_link: e.target.value })}
+                      onChange={e => {
+                        const value = e.target.value;
+                        setNewCamera({
+                          ...newCamera,
+                          api_link: value,
+                          apiType: value === "https://api-tricherie-hestim.onrender.com/api/detect" ? "Render" : "YOLO"
+                        });
+                      }}
                       required
                     >
                       <option value="https://api-tricherie-hestim.onrender.com/api/detect">Détection de triche (Render)</option>
