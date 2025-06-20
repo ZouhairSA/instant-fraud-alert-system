@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Camera, Bell, Users, Key, ArrowUp, ArrowDown, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
@@ -130,9 +130,10 @@ const Dashboard = () => {
     try {
       const docRef = await addDoc(collection(db, "cameras"), {
         ...newCamera,
-        status: "active" // Default status
+        status: "active", // Default status
+        createdAt: serverTimestamp() // Ajoute la date de création Firestore
       });
-      setCameras(prevCameras => [...prevCameras, { id: docRef.id, ...newCamera, status: "active" }]);
+      setCameras(prevCameras => [...prevCameras, { id: docRef.id, ...newCamera, status: "active", createdAt: new Date() }]);
       setNewCamera({ name: "", url: "", api_link: "https://api-tricherie-hestim.onrender.com/api/detect" });
       toast({
         title: "Caméra ajoutée",
