@@ -313,6 +313,20 @@ const Dashboard = () => {
   for (let i = 0; i < 24; i++) {
     motionByHour[i] = Math.floor(Math.random() * 10) + alertsByHour[i];
   }
+  // Caméras créées par heure (courbe verte)
+  const camerasByHour = Array(24).fill(0);
+  cameras.forEach(cam => {
+    let date = null;
+    if (cam.createdAt?.seconds) {
+      date = new Date(cam.createdAt.seconds * 1000);
+    } else if (typeof cam.createdAt === 'string') {
+      date = new Date(cam.createdAt);
+    }
+    if (date) {
+      const hour = date.getHours();
+      camerasByHour[hour]++;
+    }
+  });
   const perfectLineData = {
     labels: hours,
     datasets: [
@@ -335,6 +349,19 @@ const Dashboard = () => {
         borderColor: '#2563eb',
         backgroundColor: 'rgba(37,99,235,0.08)',
         pointBackgroundColor: '#2563eb',
+        pointBorderColor: '#fff',
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        tension: 0.4,
+        fill: true,
+        borderWidth: 3,
+      },
+      {
+        label: 'Caméras créées',
+        data: camerasByHour,
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34,197,94,0.08)',
+        pointBackgroundColor: '#22c55e',
         pointBorderColor: '#fff',
         pointRadius: 6,
         pointHoverRadius: 8,
