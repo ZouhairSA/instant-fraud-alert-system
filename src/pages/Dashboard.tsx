@@ -15,6 +15,9 @@ import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 // Changement mineur pour forcer un commit/push
 
@@ -271,6 +274,21 @@ const Dashboard = () => {
     contactStatusFilter === 'all' ? true : contact.status === contactStatusFilter
   );
 
+  // Calcul pour le graphique
+  const activeCount = cameras.filter(c => c.status === 'active').length;
+  const inactiveCount = cameras.length - activeCount;
+  const pieData = {
+    labels: ['Actives', 'Inactives'],
+    datasets: [
+      {
+        data: [activeCount, inactiveCount],
+        backgroundColor: ['#2563eb', '#f87171'],
+        borderColor: ['#1e40af', '#b91c1c'],
+        borderWidth: 2,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -340,6 +358,15 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Camera Management */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Graphique camembert caméras actives/inactives */}
+            <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center max-w-xs mx-auto mb-4">
+              <h3 className="text-lg font-bold mb-4">Répartition des caméras</h3>
+              <Pie data={pieData} options={{
+                plugins: {
+                  legend: { display: true, position: 'bottom', labels: { font: { size: 14 } } }
+                }
+              }} />
+            </div>
             {/* Add Camera Form */}
             <Card className="bg-white shadow-sm">
               <CardHeader>
