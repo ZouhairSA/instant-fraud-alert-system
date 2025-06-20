@@ -15,7 +15,7 @@ import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
-import { Pie, Line, Bar } from 'react-chartjs-2';
+import { Pie, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler);
 
@@ -378,31 +378,6 @@ const Dashboard = () => {
     }
   };
 
-  // Bar Chart pour la répartition des caméras
-  const barData = {
-    labels: ['Actives', 'Inactives'],
-    datasets: [
-      {
-        label: 'Nombre de caméras',
-        data: [activeCount, inactiveCount],
-        backgroundColor: ['#2563eb', '#ef4444'],
-        borderRadius: 8,
-        borderWidth: 1,
-      },
-    ],
-  };
-  const barOptions = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: true }
-    },
-    scales: {
-      x: { grid: { color: '#e5e7eb' }, ticks: { color: '#222', font: { size: 14 } } },
-      y: { grid: { color: '#e5e7eb' }, ticks: { color: '#222', font: { size: 14 } }, beginAtZero: true }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -476,11 +451,6 @@ const Dashboard = () => {
             <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 w-full">
               <h3 className="text-xl font-bold mb-4">Activité quotidienne détaillée</h3>
               <Line data={perfectLineData} options={perfectLineOptions} />
-            </div>
-            {/* Bar Chart premium caméras actives/inactives */}
-            <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center max-w-xs mx-auto mb-4">
-              <h3 className="text-lg font-bold mb-4">Répartition des caméras</h3>
-              <Bar data={barData} options={barOptions} />
             </div>
             {/* Add Camera Form */}
             <Card className="bg-white shadow-sm">
