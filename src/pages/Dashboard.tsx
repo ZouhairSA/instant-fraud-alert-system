@@ -15,9 +15,9 @@ import { CameraModal } from "@/components/ui/CameraModal";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { Pie, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+ChartJS.register(ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
 // Changement mineur pour forcer un commit/push
 
@@ -289,6 +289,58 @@ const Dashboard = () => {
     ],
   };
 
+  // Génération dynamique des données pour le graphique en courbes (alertes par heure)
+  const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+  // On suppose que alert.datetime est au format ISO ou contient l'heure
+  const alertsByHour = Array(24).fill(0);
+  alerts.forEach(a => {
+    if (a.datetime) {
+      const hour = new Date(a.datetime).getHours();
+      alertsByHour[hour]++;
+    }
+  });
+  // Si tu veux ajouter une autre série (ex: motion events), adapte ici
+  const lineData = {
+    labels: hours,
+    datasets: [
+      {
+        label: 'Alertes',
+        data: alertsByHour,
+        borderColor: '#ef4444',
+        backgroundColor: 'rgba(239,68,68,0.1)',
+        pointBackgroundColor: '#ef4444',
+        pointBorderColor: '#ef4444',
+        tension: 0.4,
+        fill: false,
+      },
+      // Exemple d'une autre série (à adapter si tu as d'autres types d'événements)
+      // {
+      //   label: 'Motion Events',
+      //   data: motionEventsByHour,
+      //   borderColor: '#2563eb',
+      //   backgroundColor: 'rgba(37,99,235,0.1)',
+      //   pointBackgroundColor: '#2563eb',
+      //   pointBorderColor: '#2563eb',
+      //   tension: 0.4,
+      //   fill: false,
+      // },
+    ]
+  };
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { font: { size: 14 }, color: '#222' }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e5e7eb' }, ticks: { color: '#222' } },
+      y: { grid: { color: '#e5e7eb' }, ticks: { color: '#222' } }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -358,6 +410,11 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Camera Management */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Graphique en courbes dynamique alertes par heure */}
+            <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center w-full mb-4">
+              <h3 className="text-lg font-bold mb-4">Activité quotidienne (Alertes par heure)</h3>
+              <Line data={lineData} options={lineOptions} />
+            </div>
             {/* Graphique camembert caméras actives/inactives */}
             <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center max-w-xs mx-auto mb-4">
               <h3 className="text-lg font-bold mb-4">Répartition des caméras</h3>
