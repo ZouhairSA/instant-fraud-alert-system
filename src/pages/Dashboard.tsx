@@ -376,14 +376,17 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="api-link">Lien API du modèle Render</Label>
-                    <Input
+                    <Label htmlFor="api-link">Modèle d'API</Label>
+                    <select
                       id="api-link"
-                      placeholder="https://api-tricherie-hestim.onrender.com/api/detect"
+                      className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-400"
                       value={newCamera.api_link}
-                      onChange={(e) => setNewCamera({...newCamera, api_link: e.target.value})}
+                      onChange={e => setNewCamera({ ...newCamera, api_link: e.target.value })}
                       required
-                    />
+                    >
+                      <option value="https://api-tricherie-hestim.onrender.com/api/detect">Détection de triche (Render)</option>
+                      <option value="https://object-detection-api-25xu.onrender.com/predict">Object Detection YOLO (Flask)</option>
+                    </select>
                   </div>
                   <Button
                     className="transition-all duration-200 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 shadow-md hover:scale-105"
