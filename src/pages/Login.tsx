@@ -72,7 +72,7 @@ const Login = () => {
             />
           </div>
           <div className="relative">
-            <Label htmlFor="password">Mot de passe</Label>
+            <Label htmlFor="password" className="mb-1 block">Mot de passe</Label>
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
