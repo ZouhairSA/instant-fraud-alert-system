@@ -80,20 +80,24 @@ const Login = () => {
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
-              className="mt-1 h-12 text-base rounded-lg bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 pr-12 px-4"
+              className="mt-1 h-12 text-base rounded-lg bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 pr-12 px-4"
             />
-            {/* Icône œil pour afficher/masquer le mot de passe */}
             <button
               type="button"
               tabIndex={-1}
-              className="absolute right-3 top-9 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 focus:outline-none"
               onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 focus:outline-none flex items-center justify-center"
               aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+              style={{ padding: 0, background: 'none', border: 'none' }}
             >
               {showPassword ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9.27-3.11-10-7 .18-1.02.64-2.01 1.32-2.87m2.1-2.1A9.956 9.956 0 0112 5c5 0 9.27 3.11 10 7-.18 1.02-.64 2.01-1.32 2.87m-2.1 2.1A9.956 9.956 0 0112 19c-1.02 0-2.01-.18-2.87-.51M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9.27-3.11-10-7 .18-1.02.64-2.01 1.32-2.87m2.1-2.1A9.956 9.956 0 0112 5c5 0 9.27 3.11 10 7-.18 1.02-.64 2.01-1.32 2.87m-2.1 2.1A9.956 9.956 0 0112 19c-1.02 0-2.01-.18-2.87-.51M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7 0c0 4-5 7-10 7S2 16 2 12s5-7 10-7 10 3 10 7z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7 0c0 4-5 7-10 7S2 16 2 12s5-7 10-7 10 3 10 7z" />
+                </svg>
               )}
             </button>
           </div>
