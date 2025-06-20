@@ -115,47 +115,60 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 bg-gradient-to-br from-blue-50 via-white to-blue-100 overflow-hidden">
         <div className="container px-2 md:px-4 lg:px-6 relative z-10">
-          <div className="flex flex-col items-center space-y-8 text-center">
-            <div className="space-y-4 animate-fade-in">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight">
-                Protégez vos examens et concours<br />
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
-                  Détection de Triche Instantanée
-                </span>
-                par Intelligence Artificielle
-              </h1>
-              <p className="mx-auto max-w-2xl text-xl md:text-2xl text-gray-700 leading-relaxed font-medium">
-                Surveillez, détectez et agissez en temps réel grâce à notre plateforme intelligente et sécurisée.
-              </p>
+          <div className="relative flex flex-col items-center justify-center min-h-[60vh] text-center overflow-hidden">
+            {/* Gradient animé en fond */}
+            <style>{`
+              @keyframes gradient-x {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+              }
+              .animate-gradient-x {
+                background-size: 200% 200%;
+                animation: gradient-x 8s ease-in-out infinite;
+              }
+              @keyframes fade-in {
+                from { opacity: 0; transform: translateY(30px);}
+                to { opacity: 1; transform: none;}
+              }
+              .animate-fade-in {
+                animation: fade-in 1s cubic-bezier(.4,0,.2,1) both;
+              }
+            `}</style>
+            <div className="absolute inset-0 -z-10 animate-gradient-x bg-gradient-to-r from-blue-100 via-white to-blue-200 opacity-80"></div>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-4 animate-fade-in">
+              Protégez vos examens et concours<br />
+              <span className="block bg-gradient-to-r from-blue-600 via-blue-400 to-blue-700 bg-clip-text text-transparent animate-gradient-x">
+                Détection de Triche Instantanée
+              </span>
+              <span className="block">par Intelligence Artificielle</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 animate-fade-in" style={{animationDelay: '0.2s', animationFillMode: 'both'}}>
+              Surveillez, détectez et agissez en temps réel grâce à notre plateforme intelligente et sécurisée.
+            </p>
+            <div className="flex gap-4 justify-center animate-fade-in" style={{animationDelay: '0.3s', animationFillMode: 'both'}}>
+              <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">
+                Tester la démo
+              </button>
+              <button className="px-8 py-3 rounded-lg border-2 border-blue-600 text-blue-700 font-bold bg-white hover:bg-blue-50 hover:scale-105 transition-all duration-300">
+                Nous contacter
+              </button>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 animate-scale-in w-full justify-center">
-              <Link to="/dashboard" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg font-bold shadow-lg transition-all duration-300 hover:scale-105">
-                  Tester la démo
-                </Button>
-              </Link>
-              <a href="#contact" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 text-lg font-bold border-blue-600 text-blue-700 hover:bg-blue-50 transition-all duration-300 hover:scale-105">
-                  Nous contacter
-                </Button>
-              </a>
-            </div>
-            <div className="mt-10 animate-fade-in w-full flex justify-center">
-              <img 
+            {/* Image animée */}
+            <div className="w-full flex justify-center mt-12 animate-fade-in" style={{animationDelay: '0.4s', animationFillMode: 'both'}}>
+              <img
                 src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&h=400&fit=crop&crop=center"
                 alt="Technologie de surveillance avancée"
-                className="rounded-2xl shadow-2xl mx-auto max-w-full w-full md:max-w-4xl border-4 border-white"
+                className="rounded-2xl shadow-2xl mx-auto max-w-full w-full md:max-w-4xl border-4 border-white transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>
+            {/* Scroll indicator animé */}
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+              <svg className="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
           </div>
-        </div>
-        {/* Illustration décorative en fond */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-100 rounded-full opacity-30 blur-3xl z-0"></div>
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl z-0"></div>
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-          <ArrowDown className="h-8 w-8 text-blue-400" />
         </div>
       </section>
 
