@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,8 @@ const Index = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,6 +97,7 @@ const Index = () => {
           <div className="flex items-center space-x-2 w-full md:w-auto justify-center md:justify-start py-2 md:py-0">
             <img src="/hestimLogo.png" alt="HESTIM Logo" className="h-8 md:h-10 w-auto mr-2" />
           </div>
+          {/* Desktop nav */}
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
               Fonctionnalités
@@ -109,6 +112,34 @@ const Index = () => {
               <Button variant="outline">Connexion</Button>
             </Link>
           </nav>
+          {/* Mobile nav */}
+          <div className="flex md:hidden items-center">
+            <button
+              className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Ouvrir le menu"
+            >
+              <svg className="h-7 w-7 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            {mobileMenuOpen && (
+              <div className="absolute top-16 left-0 w-full bg-white shadow-lg z-50 flex flex-col items-center py-4 space-y-4 animate-fade-in border-b">
+                <a href="#features" className="text-base font-medium hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  Fonctionnalités
+                </a>
+                <a href="#how-it-works" className="text-base font-medium hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  Comment ça marche
+                </a>
+                <a href="#contact" className="text-base font-medium hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  Contact
+                </a>
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-40">Connexion</Button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -146,7 +177,10 @@ const Index = () => {
               Surveillez, détectez et agissez en temps réel grâce à notre plateforme intelligente et sécurisée.
             </p>
             <div className="flex gap-4 justify-center animate-fade-in" style={{animationDelay: '0.3s', animationFillMode: 'both'}}>
-              <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">
+              <button
+                className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+                onClick={() => navigate('/login')}
+              >
                 Tester la démo
               </button>
               <button className="px-8 py-3 rounded-lg border-2 border-blue-600 text-blue-700 font-bold bg-white hover:bg-blue-50 hover:scale-105 transition-all duration-300">
