@@ -17,6 +17,8 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import { Pie, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler } from 'chart.js';
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 ChartJS.register(ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler);
 
 // Changement mineur pour forcer un commit/push
@@ -409,6 +411,45 @@ const Dashboard = () => {
         beginAtZero: true
       }
     }
+  };
+
+  // State pour l'upload d'image
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [images, setImages] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
+
+  // Charger la liste des images
+  useEffect(() => {
+    const fetchImages = async () => {
+      const snap = await getDocs(collection(db, "images"));
+      setImages(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    };
+    fetchImages();
+  }, []);
+
+  // Upload image
+  const handleImageUpload = async () => {
+    if (!imageFile) return;
+    setUploading(true);
+    try {
+      const storageRef = ref(storage, `images/${imageFile.name}_${Date.now()}`);
+      await uploadBytes(storageRef, imageFile);
+      const url = await getDownloadURL(storageRef);
+      await addDoc(collection(db, "images"), {
+        name: imageFile.name,
+        date: serverTimestamp(),
+        url,
+        status: "new"
+      });
+      setImageFile(null);
+      toast({ title: "Image uploadée !" });
+      // Recharge la liste
+      const snap = await getDocs(collection(db, "images"));
+      setImages(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    } catch (err) {
+      toast({ title: "Erreur upload", description: String(err), variant: "destructive" });
+    }
+    setUploading(false);
   };
 
   return (
@@ -818,6 +859,55 @@ const Dashboard = () => {
             </Card>
           </div>
         </div>
+
+        {/* Section upload d'image */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Ajouter une image à tester</CardTitle>
+            <CardDescription>Sélectionnez une image pour l'uploader et la tester plus tard</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={e => setImageFile(e.target.files?.[0] || null)}
+              className="mb-2"
+            />
+            <Button onClick={handleImageUpload} disabled={!imageFile || uploading}>
+              {uploading ? "Upload en cours..." : "Uploader"}
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Section images testées */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Images testées</CardTitle>
+            <CardDescription>Liste des images uploadées pour la détection</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Image</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {images.map(img => (
+                  <TableRow key={img.id}>
+                    <TableCell>{img.name}</TableCell>
+                    <TableCell>{img.date?.toDate?.().toLocaleString?.() || "-"}</TableCell>
+                    <TableCell>{img.status}</TableCell>
+                    <TableCell>{img.url && <img src={img.url} alt={img.name} style={{ width: 60 }} />}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
 
       <CameraModal
