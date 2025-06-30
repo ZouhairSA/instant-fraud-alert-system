@@ -37,6 +37,10 @@ const typingDots = (
   </div>
 );
 
+const CLOUD_NAME = "TON_CLOUD_NAME"; // à remplacer
+const UPLOAD_PRESET = "TON_UPLOAD_PRESET"; // à remplacer
+const API_PREDICT_URL = "https://TON_API/predict"; // à remplacer
+
 const Dashboard = () => {
   const [cameras, setCameras] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
   const [alerts, setAlerts] = useState([]); // Initialise avec un tableau vide, les données viendront de Firestore
@@ -473,6 +477,47 @@ const Dashboard = () => {
       toast({ title: "Erreur upload", description: String(err), variant: "destructive" });
     }
     setUploading(false);
+  };
+
+  // Pour la prédiction sans enregistrement
+  const [testFile, setTestFile] = useState<File | null>(null);
+  const [testImageUrl, setTestImageUrl] = useState<string | null>(null);
+  const [testPrediction, setTestPrediction] = useState<any>(null);
+  const [testLoading, setTestLoading] = useState(false);
+
+  const handleCloudinaryUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    return data.secure_url;
+  };
+
+  const handleTestPredict = async () => {
+    if (!testFile) return;
+    setTestLoading(true);
+    setTestPrediction(null);
+    try {
+      // 1. Upload temporaire sur Cloudinary
+      const url = await handleCloudinaryUpload(testFile);
+      setTestImageUrl(url);
+      // 2. Envoi à l'API Flask
+      const formData = new FormData();
+      formData.append("image", testFile);
+      const res = await fetch(API_PREDICT_URL, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      setTestPrediction(data);
+    } catch (err) {
+      toast({ title: "Erreur prédiction", description: String(err), variant: "destructive" });
+    }
+    setTestLoading(false);
   };
 
   return (
@@ -951,6 +996,38 @@ const Dashboard = () => {
               </TableBody>
             </Table>
           </CardContent>
+        </Card>
+
+        {/* Section test image sans enregistrement */}
+        <Card className="mt-8 shadow-lg border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl">Tester une image (sans enregistrement)</CardTitle>
+            <CardDescription className="text-gray-600">Sélectionnez une image, faites la prédiction, rien n'est enregistré.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col md:flex-row items-center gap-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={e => setTestFile(e.target.files?.[0] || null)}
+              className="block w-full md:w-auto border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              disabled={testLoading}
+            />
+            <Button onClick={handleTestPredict} disabled={!testFile || testLoading} className="w-full md:w-auto">
+              {testLoading ? "Prédiction en cours..." : "Faire la prédiction"}
+            </Button>
+            {testFile && !testLoading && (
+              <div className="flex flex-col items-center">
+                <span className="text-xs text-gray-500 mb-1">Aperçu :</span>
+                <img src={URL.createObjectURL(testFile)} alt="preview" className="rounded shadow w-24 h-24 object-cover" />
+              </div>
+            )}
+          </CardContent>
+          {testPrediction && (
+            <div className="p-4">
+              <h3 className="font-semibold mb-2">Résultat de la prédiction :</h3>
+              <pre className="bg-gray-100 rounded p-2 text-sm overflow-x-auto">{JSON.stringify(testPrediction, null, 2)}</pre>
+            </div>
+          )}
         </Card>
       </div>
 
