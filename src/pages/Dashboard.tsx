@@ -930,36 +930,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Section upload d'image améliorée */}
-        <Card className="mt-8 shadow-lg border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl">Ajouter une image à tester</CardTitle>
-            <CardDescription className="text-gray-600">Sélectionnez une image pour l'uploader et la tester plus tard</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col md:flex-row items-center gap-4">
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="block w-full md:w-auto border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-              disabled={uploading}
-              placeholder="add picture or video"
-            />
-            <Button onClick={handleImageUpload} disabled={!imageFile || uploading} className="w-full md:w-auto">
-              {uploading ? (
-                <span className="flex items-center gap-2"><svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Upload en cours...</span>
-              ) : "Uploader"}
-            </Button>
-            {imageFile && !uploading && (
-              <div className="flex flex-col items-center">
-                <span className="text-xs text-gray-500 mb-1">Aperçu :</span>
-                <img src={URL.createObjectURL(imageFile)} alt="preview" className="rounded shadow w-24 h-24 object-cover" />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
         {/* Section test image sans enregistrement */}
         <Card className="mt-8 shadow-lg border-0">
           <CardHeader>
