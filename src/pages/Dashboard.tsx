@@ -484,6 +484,7 @@ const Dashboard = () => {
   const [testImageUrl, setTestImageUrl] = useState<string | null>(null);
   const [testPrediction, setTestPrediction] = useState<any>(null);
   const [testLoading, setTestLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleCloudinaryUpload = async (file: File) => {
     const formData = new FormData();
@@ -514,6 +515,7 @@ const Dashboard = () => {
       });
       const data = await res.json();
       setTestPrediction(data);
+      setShowModal(true);
     } catch (err) {
       toast({ title: "Erreur prédiction", description: String(err), variant: "destructive" });
     }
@@ -1022,13 +1024,22 @@ const Dashboard = () => {
               </div>
             )}
           </CardContent>
-          {testPrediction && (
-            <div className="p-4">
-              <h3 className="font-semibold mb-2">Résultat de la prédiction :</h3>
+        </Card>
+
+        {/* Pop-up résultat prédiction */}
+        <Dialog open={showModal} onOpenChange={setShowModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Résultat de la prédiction</DialogTitle>
+            </DialogHeader>
+            {testImageUrl && (
+              <img src={testImageUrl} alt="Aperçu" style={{ maxWidth: "100%", maxHeight: 400, margin: "0 auto", display: "block", borderRadius: 12 }} />
+            )}
+            <div style={{ marginTop: 16 }}>
               <pre className="bg-gray-100 rounded p-2 text-sm overflow-x-auto">{JSON.stringify(testPrediction, null, 2)}</pre>
             </div>
-          )}
-        </Card>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <CameraModal
