@@ -960,46 +960,6 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Section images testées améliorée */}
-        <Card className="mt-8 shadow-lg border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl">Images testées</CardTitle>
-            <CardDescription className="text-gray-600">Liste des images uploadées pour la détection</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {images.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center text-gray-400">Aucune image uploadée.</TableCell>
-                  </TableRow>
-                ) : images.map(img => (
-                  <TableRow key={img.id}>
-                    <TableCell>{img.url && <img src={img.url} alt={img.name} className="rounded shadow w-16 h-16 object-cover" />}</TableCell>
-                    <TableCell className="font-semibold">{img.name}</TableCell>
-                    <TableCell>{img.date?.toDate?.().toLocaleString?.() || "-"}</TableCell>
-                    <TableCell>
-                      <Badge variant={img.status === "tested" ? "default" : "secondary"}>{img.status || "-"}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Button size="sm" variant="outline" disabled={img.status === "tested"}>Prédiction</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
         {/* Section test image sans enregistrement */}
         <Card className="mt-8 shadow-lg border-0">
           <CardHeader>
