@@ -420,6 +420,19 @@ const Dashboard = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const MAX_SIZE_MB = 2;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.size > MAX_SIZE_MB * 1024 * 1024) {
+      toast({ title: "Image trop lourde", description: "Max 2 Mo", variant: "destructive" });
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      setImageFile(null);
+      return;
+    }
+    setImageFile(file || null);
+  };
+
   // Charger la liste des images
   useEffect(() => {
     const fetchImages = async () => {
@@ -433,7 +446,12 @@ const Dashboard = () => {
   const handleImageUpload = async () => {
     if (!imageFile) return;
     setUploading(true);
+    let timeoutId: any;
     try {
+      timeoutId = setTimeout(() => {
+        setUploading(false);
+        toast({ title: "Upload trop long", description: "Vérifie ta connexion ou réessaie.", variant: "destructive" });
+      }, 30000); // 30 secondes
       const storageRef = ref(storage, `images/${imageFile.name}_${Date.now()}`);
       await uploadBytes(storageRef, imageFile);
       const url = await getDownloadURL(storageRef);
@@ -449,7 +467,9 @@ const Dashboard = () => {
       // Recharge la liste
       const snap = await getDocs(collection(db, "images"));
       setImages(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      clearTimeout(timeoutId);
     } catch (err) {
+      clearTimeout(timeoutId);
       toast({ title: "Erreur upload", description: String(err), variant: "destructive" });
     }
     setUploading(false);
@@ -874,7 +894,7 @@ const Dashboard = () => {
               type="file"
               accept="image/*"
               ref={fileInputRef}
-              onChange={e => setImageFile(e.target.files?.[0] || null)}
+              onChange={handleFileChange}
               className="block w-full md:w-auto border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
               disabled={uploading}
               placeholder="add picture or video"
