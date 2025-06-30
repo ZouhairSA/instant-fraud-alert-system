@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -418,6 +418,8 @@ const Dashboard = () => {
   const [images, setImages] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Charger la liste des images
   useEffect(() => {
     const fetchImages = async () => {
@@ -442,7 +444,8 @@ const Dashboard = () => {
         status: "new"
       });
       setImageFile(null);
-      toast({ title: "Image uploadée !" });
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      toast({ title: "Image uploadée avec succès !", description: imageFile.name });
       // Recharge la liste
       const snap = await getDocs(collection(db, "images"));
       setImages(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -860,48 +863,69 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Section upload d'image */}
-        <Card className="mt-8">
+        {/* Section upload d'image améliorée */}
+        <Card className="mt-8 shadow-lg border-0">
           <CardHeader>
-            <CardTitle>Ajouter une image à tester</CardTitle>
-            <CardDescription>Sélectionnez une image pour l'uploader et la tester plus tard</CardDescription>
+            <CardTitle className="text-2xl">Ajouter une image à tester</CardTitle>
+            <CardDescription className="text-gray-600">Sélectionnez une image pour l'uploader et la tester plus tard</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col md:flex-row items-center gap-4">
             <input
               type="file"
               accept="image/*"
+              ref={fileInputRef}
               onChange={e => setImageFile(e.target.files?.[0] || null)}
-              className="mb-2"
+              className="block w-full md:w-auto border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              disabled={uploading}
+              placeholder="add picture or video"
             />
-            <Button onClick={handleImageUpload} disabled={!imageFile || uploading}>
-              {uploading ? "Upload en cours..." : "Uploader"}
+            <Button onClick={handleImageUpload} disabled={!imageFile || uploading} className="w-full md:w-auto">
+              {uploading ? (
+                <span className="flex items-center gap-2"><svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Upload en cours...</span>
+              ) : "Uploader"}
             </Button>
+            {imageFile && !uploading && (
+              <div className="flex flex-col items-center">
+                <span className="text-xs text-gray-500 mb-1">Aperçu :</span>
+                <img src={URL.createObjectURL(imageFile)} alt="preview" className="rounded shadow w-24 h-24 object-cover" />
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Section images testées */}
-        <Card className="mt-8">
+        {/* Section images testées améliorée */}
+        <Card className="mt-8 shadow-lg border-0">
           <CardHeader>
-            <CardTitle>Images testées</CardTitle>
-            <CardDescription>Liste des images uploadées pour la détection</CardDescription>
+            <CardTitle className="text-2xl">Images testées</CardTitle>
+            <CardDescription className="text-gray-600">Liste des images uploadées pour la détection</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Image</TableHead>
                   <TableHead>Nom</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Image</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {images.map(img => (
+                {images.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center text-gray-400">Aucune image uploadée.</TableCell>
+                  </TableRow>
+                ) : images.map(img => (
                   <TableRow key={img.id}>
-                    <TableCell>{img.name}</TableCell>
+                    <TableCell>{img.url && <img src={img.url} alt={img.name} className="rounded shadow w-16 h-16 object-cover" />}</TableCell>
+                    <TableCell className="font-semibold">{img.name}</TableCell>
                     <TableCell>{img.date?.toDate?.().toLocaleString?.() || "-"}</TableCell>
-                    <TableCell>{img.status}</TableCell>
-                    <TableCell>{img.url && <img src={img.url} alt={img.name} style={{ width: 60 }} />}</TableCell>
+                    <TableCell>
+                      <Badge variant={img.status === "tested" ? "default" : "secondary"}>{img.status || "-"}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Button size="sm" variant="outline" disabled={img.status === "tested"}>Prédiction</Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
