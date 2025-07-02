@@ -15,14 +15,34 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
   const [loading, setLoading] = React.useState(false);
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
-  // Utilise un flux HLS alternatif si mux.dev (pour contourner CORS ou test)
-  const effectiveCameraUrl = cameraUrl && cameraUrl.includes('mux.dev')
-    ? 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
-    : cameraUrl;
+  // Ajout : détecter si c'est un MP4
+  const isMp4 = cameraUrl && cameraUrl.toLowerCase().endsWith('.mp4');
+
   React.useEffect(() => {
-    if (!open || !effectiveCameraUrl) return;
+    if (!open || !cameraUrl) return;
     setError(null);
     setLoading(true);
+
+    // Si c'est un MP4, on affiche directement la vidéo
+    if (isMp4) {
+      const video = videoRef.current;
+      if (video) {
+        video.src = cameraUrl;
+        video.onloadeddata = () => {
+          setLoading(false);
+        };
+        video.onerror = () => {
+          setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
+          setLoading(false);
+        };
+      }
+      return;
+    }
+
+    // Utilise un flux HLS alternatif si mux.dev (pour contourner CORS ou test)
+    const effectiveCameraUrl = cameraUrl && cameraUrl.includes('mux.dev')
+      ? 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
+      : cameraUrl;
     let hls: Hls | null = null;
     const video = videoRef.current;
     const timeout = setTimeout(() => {
@@ -67,7 +87,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
       if (hls) hls.destroy();
       clearTimeout(timeout);
     };
-  }, [effectiveCameraUrl, open]);
+  }, [cameraUrl, open, isMp4]);
 
   // Animation trois points
   const typingDots = (
@@ -100,6 +120,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
               autoPlay
               className="w-full h-[480px] rounded-xl border shadow-lg bg-black"
               style={{ display: loading ? 'none' : 'block' }}
+              src={isMp4 ? cameraUrl : undefined}
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-[480px] text-center">
