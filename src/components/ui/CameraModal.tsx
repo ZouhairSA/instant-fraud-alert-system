@@ -103,10 +103,13 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl w-full rounded-2xl shadow-2xl p-0 overflow-hidden">
+      <DialogContent className="max-w-3xl w-full rounded-2xl shadow-2xl p-0 overflow-hidden" aria-describedby="camera-modal-description">
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold text-center">Aperçu de la caméra</DialogTitle>
         </DialogHeader>
+        <div id="camera-modal-description" className="sr-only">
+          Cette fenêtre affiche un aperçu vidéo de la caméra sélectionnée ou une vidéo de test.
+        </div>
         <div className="p-6">
           {loading && !error ? (
             <div className="flex flex-col items-center justify-center h-[480px] text-center">
