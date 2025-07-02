@@ -48,7 +48,7 @@ export function CameraModal({ open, onOpenChange, cameraUrl }: CameraModalProps)
     const timeout = setTimeout(() => {
       setError("Le lien fourni n'est pas valide ou la caméra n'est pas active.");
       setLoading(false);
-    }, 8000);
+    }, 3000);
     if (video) {
       console.log('Tentative de lecture du flux HLS:', effectiveCameraUrl);
       if (Hls.isSupported()) {
