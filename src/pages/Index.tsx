@@ -387,6 +387,17 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Section Caméras Connectées */}
+      <section className="py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <h2 className="text-2xl font-bold mb-4">Caméras Connectées</h2>
+          {/* Ici se trouve probablement le tableau/liste des caméras */}
+          {/* ...tableau des caméras... */}
+        </div>
+      </section>
+
+      <CameraSection />
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 md:py-12">
         <div className="container px-2 md:px-4 lg:px-6">
@@ -432,7 +443,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-      <CameraSection />
     </div>
   );
 };
