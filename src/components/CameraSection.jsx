@@ -73,8 +73,13 @@ export default function CameraSection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
-      <button onClick={() => setOpen(true)}>Ouvrir la caméra du PC</button>
+    <div className="flex justify-center">
+      <button
+        onClick={() => setOpen(true)}
+        className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+      >
+        Ouvrir la caméra du PC
+      </button>
       <CameraPopup open={open} onClose={() => setOpen(false)} />
     </div>
   );
