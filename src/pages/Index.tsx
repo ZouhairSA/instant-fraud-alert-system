@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Camera, Bell, Users, Key, ArrowDown, MapPin } from "lucide-react";
 import { submitContactForm } from "@/services/contactService";
 import { useToast } from "@/hooks/use-toast";
+import CameraSection from '../components/CameraSection';
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -431,6 +432,7 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      <CameraSection />
     </div>
   );
 };
