@@ -1,0 +1,59 @@
+# Code complet pour détecter uniquement les téléphones dans un dossier d’images avec YOLOv8 pré-entraîné (à utiliser dans Google Colab)
+
+# 1. Monter Google Drive (si tes images sont sur Drive)
+from google.colab import drive
+drive.mount('/content/drive')
+
+# 2. Installer Ultralytics (YOLOv8)
+!pip install -q ultralytics
+
+# 3. Importer les librairies nécessaires
+from ultralytics import YOLO
+import cv2
+import os
+from matplotlib import pyplot as plt
+
+# 4. Définir les chemins (à adapter selon ton Google Drive)
+image_folder = '/content/drive/MyDrive/Internship_S8_2025 2024/AI_Security/Demo/NewTest'
+output_folder = '/content/drive/MyDrive/Internship_S8_2025 2024/AI_Security/Demo/NewTestRst'
+os.makedirs(output_folder, exist_ok=True)
+
+# 5. Charger le modèle YOLOv8 pré-entraîné sur COCO
+model = YOLO('yolov8n.pt')  # Tu peux remplacer par 'yolov8s.pt' ou 'yolov8m.pt' pour plus de précision
+
+# 6. ID de la classe "cell phone" dans COCO
+PHONE_CLASS_ID = 67
+
+# 7. Parcourir les images et détecter uniquement les téléphones
+for image_name in os.listdir(image_folder):
+    if image_name.lower().endswith(('.jpg', '.jpeg', '.png')):
+        image_path = os.path.join(image_folder, image_name)
+        results = model(image_path, conf=0.5)
+        detections = results[0].boxes
+
+        # Filtrer les détections pour ne garder que les téléphones
+        phone_boxes = [box for box in detections if int(box.cls[0]) == PHONE_CLASS_ID]
+
+        if phone_boxes:
+            print(f"🟥 Téléphone détecté dans : {image_name}")
+            image = cv2.imread(image_path)
+            for box in phone_boxes:
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                conf = float(box.conf[0])
+                label = model.names[PHONE_CLASS_ID]
+                # Dessiner la boîte et le label
+                cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                cv2.putText(image, f'{label} {conf:.2f}', (x1, y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+            # Sauvegarder l'image annotée
+            output_path = os.path.join(output_folder, image_name)
+            cv2.imwrite(output_path, image)
+            # Afficher l'image
+            image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            plt.figure(figsize=(10, 8))
+            plt.imshow(image_rgb)
+            plt.title(f"Téléphone détecté : {image_name}")
+            plt.axis('off')
+            plt.show()
+        else:
+            print(f"✅ Pas de téléphone détecté dans : {image_name}") 
