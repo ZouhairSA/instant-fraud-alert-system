@@ -21,8 +21,9 @@ os.makedirs(output_folder, exist_ok=True)
 # 5. Charger le modèle YOLOv8 pré-entraîné sur COCO
 model = YOLO('yolov8n.pt')  # Tu peux remplacer par 'yolov8s.pt' ou 'yolov8m.pt' pour plus de précision
 
-# 6. ID de la classe "cell phone" dans COCO
+# 6. ID de la classe "cell phone" dans COCO --------------
 PHONE_CLASS_ID = 67
+
 
 # 7. Parcourir les images et détecter uniquement les téléphones
 for image_name in os.listdir(image_folder):
